@@ -1,0 +1,15 @@
+// Step to initialise the project from the very first Step
+
+Step 1- npm create vite@latest  (help to install the vite in the file)
+
+Step-2 npm install tailwindcss @tailwindcss/vite  (help to install the tailwind the client folder)
+       Sub Step 1- import tailwind css into the vite.config.ts
+
+Step-3 Create (page,components,context,types)  folder structure in the src folder
+       Sub Step-1 create different type of pages in the page folder
+
+Step-4  npm install react-router-dom react-hot-toast lucide-react @icons-pack/react-simple-icons leaflet(for the map) react-leaflet
+        npm install -D @types/leaflet
+        
+
+

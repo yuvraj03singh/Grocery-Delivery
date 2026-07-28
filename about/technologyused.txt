@@ -1,0 +1,7 @@
+1.NEON database is used to store the data about the product which have been listed
+  in the app and also help to manage the postgres sql
+
+2.INNGEST help to automate the task to the user 
+
+3.
+  
