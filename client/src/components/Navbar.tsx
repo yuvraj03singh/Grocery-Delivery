@@ -18,8 +18,8 @@ import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
   const [user, setUser] = useState<any>({
-    name: "yuvi",
-    email: "yuvi@gmail.com",
+    name: "aashu",
+    email: "aashu@gmail.com",
     isAdmin: true,
   });
 
