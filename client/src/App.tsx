@@ -12,6 +12,15 @@ import MyOrders from "./pages/MyOrders";
 import OrderTracking from "./pages/OrderTracking";
 import Addresses from "./pages/Addresses";
 import AppLayout from "./pages/AppLayout";
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminProducts from "./pages/admin/AdminProducts";
+import AdminProductForm from "./pages/admin/AdminProductForm";
+import AdminOrders from "./pages/admin/AdminOrders";
+import AdminDeliveryPartners from "./pages/admin/AdminDeliveryPartners";
+import DeliveryLogin from "./components/delivery/DeliveryLogin";
+import DeliveryLayout from "./pages/delivery/DeliveryLayout";
+import DeliveryDashboard from "./components/delivery/DeliveryDashboard";
 const App = () => {
   return (
     <>
@@ -44,6 +53,23 @@ const App = () => {
             <Route path="orders/:id" element={<OrderTracking />} />
             <Route path="addresses" element={<Addresses />} />
           </Route>
+        </Route>
+
+        {/*admin routes*/}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="products" element={<AdminProducts />} />
+          <Route path="products/new" element={<AdminProductForm />} />
+          <Route path="products/:id/edit" element={<AdminProductForm />} />
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="delivery-partners" element={<AdminDeliveryPartners />} />
+          <Route path="delivery-partner" element={<AdminDeliveryPartners />} />
+        </Route>
+
+        {/*delivery partner routes*/}
+        <Route path="/delivery/login" element={<DeliveryLogin />} />
+        <Route path="/delivery" element={<DeliveryLayout />}>
+          <Route index element={<DeliveryDashboard />} />
         </Route>
       </Routes>
     </>

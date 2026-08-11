@@ -2,13 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import type { Product } from "../types";
 import { categoriesData, dummyProducts } from "../assets/assets";
-import {
-  ChevronDown,
-  Filter,
-  Home,
-  SlidersHorizontal,
-  XIcon,
-} from "lucide-react";
+import { ChevronDown, Home, SlidersHorizontal, XIcon } from "lucide-react";
 import ProductCard from "../components/ProductCard";
 import Loading from "../components/Loading";
 import FilterPanel from "../components/FilterPanel";
@@ -16,7 +10,7 @@ import FilterPanel from "../components/FilterPanel";
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
-  const [totalPages, setTotalPages] = useState(1);
+  const totalPages = 1;
   const [loading, setLoading] = useState(true);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
@@ -203,7 +197,7 @@ const Products = () => {
             </div>
             <div className="p-4">
               <FilterPanel
-              categories={categoriesData}
+                categories={categoriesData}
                 category={category}
                 organic={organic}
                 minPrice={minPrice}
@@ -211,8 +205,7 @@ const Products = () => {
                 updateFilter={updateFilter}
                 clearFilters={clearFilters}
                 hasFilters={hasFilters}
-                 />
-
+              />
             </div>
           </div>
         </>

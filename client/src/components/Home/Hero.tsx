@@ -4,7 +4,7 @@ import { heroSectionData } from "../../assets/assets";
 
 const Hero = () => {
   return (
-    <section className="relative overflow-hidden min-h-[540px] mb-10 rounded-3xl flex items-center">
+    <section className="relative overflow-hidden min-h-135 mb-10 rounded-3xl flex items-center">
       <img
         src={heroSectionData.hero_image}
         alt="Hero"
@@ -33,14 +33,14 @@ const Hero = () => {
           <div className="flex flex-wrap gap-3">
             <Link
               to="/products"
-              className="min-w-[220px] px-8 py-3.5 bg-app-orange text-white font-semibold rounded-full hover:bg-app-orange-dark transition-all flex-center gap-2 active:scale-[0.98]"
+              className="min-w-55 px-8 py-3.5 bg-app-orange text-white font-semibold rounded-full hover:bg-app-orange-dark transition-all flex-center gap-2 active:scale-[0.98]"
             >
               Shop Now <ArrowRightIcon className="size-4" />
             </Link>
 
             <Link
               to="/products"
-              className="min-w-[220px] px-8 py-3.5 bg-white/10 border border-white/25 text-white font-semibold rounded-full hover:bg-white/20 transition-all flex-center active:scale-[0.98]"
+              className="min-w-55 px-8 py-3.5 bg-white/10 border border-white/25 text-white font-semibold rounded-full hover:bg-white/20 transition-all flex-center active:scale-[0.98]"
             >
               Browse Categories
             </Link>

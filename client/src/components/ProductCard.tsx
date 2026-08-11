@@ -1,5 +1,5 @@
 import { Plus, Star } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import type { Product } from "../types";
 import { useCart } from "../context/CartContext";
 
@@ -8,7 +8,7 @@ interface Props {
 }
 
 const ProductCard = ({ product }: Props) => {
-  const currency = import.meta.env.VITE_CURRENCY_SYMBOL || "₹";
+  const currency = import.meta.env.VITE_CURRENCY_SYMBOL || "\u20B9";
 
   const { addToCart } = useCart();
   const navigate = useNavigate();
@@ -26,15 +26,15 @@ const ProductCard = ({ product }: Props) => {
       {/* Image */}
       <div className="relative aspect-square overflow-hidden">
         <img
-          src={product.image} //this product image come from the dummy data which is available in assets folder and image store in json format in the assets.ts
+          src={product.image}
           alt={product.name}
           className="w-full h-full object-cover p-4 group-hover:p-2 transition-all duration-300"
         />
 
         {/* Discount Badge */}
-        <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+        <div className="absolute top-3 left-3 z-10 flex flex-wrap gap-1.5">
           {product.discount > 0 && (
-            <span className="px-2 py-0.5 text-[10px] font-semibold uppercase bg-app-orange text-white rounded-full">
+            <span className="px-2 py-0.5 text-[10px] font-semibold uppercase bg-app-orange text-white rounded-full shadow-sm">
               {product.discount}% OFF
             </span>
           )}
@@ -74,19 +74,16 @@ const ProductCard = ({ product }: Props) => {
             </span>
           )}
 
-          {/*price + add to cart button */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1 truncate">
-              {/* <span className="text-base font-medium">{currency}{product.price.toFixed(1)}</span> */}
-              {/* <span className="text-xs text-app-text-light block">{product.unit}</span> */}
-              {/* {product.originalPrice> product.price && <span className="text-xs text-app-text-light line-through ml-1.5">{currency}{product.originalPrice.toFixed(1)}</span>} */}
-            </div>
             <button
+              type="button"
               onClick={(e) => {
+                e.preventDefault();
                 e.stopPropagation();
                 addToCart(product);
               }}
               className="size-7 rounded-full bg-app-orange text-white flex-center shrink-0 hover:bg-app-orange-dark transition-colors ml-5 active:scale-95"
+              aria-label={`Add ${product.name} to cart`}
             >
               <Plus className="size-3.5" />
             </button>

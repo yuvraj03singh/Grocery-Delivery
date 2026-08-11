@@ -53,7 +53,8 @@ const Navbar = () => {
           to="/"
           className="flex items-center gap-2 text-[22px] font-medium shrink-0"
         >
-          <BikeIcon size={24} />D mart
+          <BikeIcon size={24} />
+          Apna Bazaar
         </Link>
 
         {/* Menu + Search */}
