@@ -1,0 +1,6 @@
+step 1- install all dependencies 
+step 2- create server and connect
+step 3-connect with neon create database in neon and orm connect with prisma
+step 4- create prisma.config ts
+step 5-install npx prisma db push and one more command
+step 6-install jwt bcrypt multer and cloudinary

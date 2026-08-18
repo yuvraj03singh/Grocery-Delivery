@@ -10,6 +10,17 @@ Step-3 Create (page,components,context,types)  folder structure in the src folde
 
 Step-4  npm install react-router-dom react-hot-toast lucide-react @icons-pack/react-simple-icons leaflet(for the map) react-leaflet
         npm install -D @types/leaflet
+
+
+
+
+vercel step 
+
+step-1 create vercel.json file in server folder
+
+step-2 paste all the vercel json code in that file
+
+
         
 
 
