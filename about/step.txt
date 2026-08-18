@@ -20,6 +20,13 @@ step-1 create vercel.json file in server folder
 
 step-2 paste all the vercel json code in that file
 
+step-3 push all the file in the git hub
+
+step-4 add new project in the vercel and choose directory server(backend part) or client(frontend part) according to the need
+
+step-5 paste env file to the to vercel
+
+
 
         
 
