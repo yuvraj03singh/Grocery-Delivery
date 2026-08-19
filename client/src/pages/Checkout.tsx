@@ -8,11 +8,14 @@ import {
   MapPinIcon,
 } from "lucide-react";
 import { useCart } from "../context/CartContext";
-import { dummyAddressData } from "../assets/assets";
+// import { dummyAddressData } from "../assets/assets";
 import type { Address } from "../types";
 import CheckoutAddress from "../components/Checkout/CheckoutAddress";
 import CheckoutPayment from "../components/Checkout/CheckoutPayment";
 import CheckoutReview from "../components/Checkout/CheckoutReview";
+import { toast } from "react-hot-toast/headless";
+import api from "../config/api";
+import { useAuth } from "../context/AuthContext";
 
 type Step = "address" | "payment" | "review";
 type PaymentMethod = "cash" | "card";
@@ -23,14 +26,13 @@ const Checkout = () => {
   const [step, setStep] = useState<Step>("address");
   const [loading, setLoading] = useState(false);
 
-  const { items, cartTotal } = useCart();
+  const { items, cartTotal, clearCart } = useCart();
+  const { user } = useAuth();
 
-  const dummyUser = {
-    addresses: dummyAddressData as Address[],
-  };
+
 
   const [address, setAddress] = useState<Address>({
-    _id: "",
+    id: "",
     label: "Home",
     address: "",
     city: "",
@@ -52,39 +54,60 @@ const Checkout = () => {
     label: string;
     icon: typeof MapPinIcon;
   }> = [
-    {
-      key: "address",
-      label: "Address",
-      icon: MapPinIcon,
-    },
-    {
-      key: "payment",
-      label: "Payment",
-      icon: CreditCardIcon,
-    },
-    {
-      key: "review",
-      label: "Review",
-      icon: CheckIcon,
-    },
-  ];
+      {
+        key: "address",
+        label: "Address",
+        icon: MapPinIcon,
+      },
+      {
+        key: "payment",
+        label: "Payment",
+        icon: CreditCardIcon,
+      },
+      {
+        key: "review",
+        label: "Review",
+        icon: CheckIcon,
+      },
+    ];
 
   const handlePlaceOrder = async () => {
-    setLoading(true);
+    setLoading(true)
+    try {
+      const orderData = {
+        items: items.map((item) => ({
+          product: item.product.id,
+          quantity: item.quantity,
+        })),
+        shippingAddress: address,
+        paymentMethod,
+      };
+      const { data } = await api.post("/orders", orderData);
+      console.log(data);
 
-    setTimeout(() => {
+      if (data.url) {
+        window.location.href = data.url;
+        return;
+      }
+      clearCart();
+      toast.success("Order placed successfully");
+      navigate(`/orders/${data.orderId}`);
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || error?.message || "Failed to place order");
+    } finally {
       setLoading(false);
-      navigate("/orders");
-    }, 400);
+      scrollTo(0, 0);
+    }
   };
 
   useEffect(() => {
-    if (dummyUser.addresses.length > 0) {
-      const defaultAddr =
-        dummyUser.addresses.find((a) => a.isDefault) || dummyUser.addresses[0];
+    const userAddresses = user?.addresses ?? [];
+
+    if (userAddresses.length > 0) {
+      const defaultAddr = userAddresses.find((a) => a.isDefault) || userAddresses[0];
 
       setAddress({
-        _id: defaultAddr?._id ?? "",
+        id: defaultAddr?.id ?? "",
         label: defaultAddr?.label ?? "Home",
         address: defaultAddr?.address ?? "",
         city: defaultAddr?.city ?? "",
@@ -95,7 +118,7 @@ const Checkout = () => {
         lng: defaultAddr?.lng ?? 0,
       });
     }
-  }, []);
+  }, [user?.addresses]);
 
   return (
     <div className="min-h-screen bg-app-cream py-8">
@@ -120,11 +143,10 @@ const Checkout = () => {
               <div key={s.key} className="flex items-center gap-2">
                 <button
                   onClick={() => setStep(s.key)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-                    step === s.key
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${step === s.key
                       ? "bg-app-green text-white"
                       : "bg-app-cream text-app-text-light hover:bg-app-green/10 hover:text-app-green"
-                  }`}
+                    }`}
                 >
                   <Icon className="size-5" />
                   {s.label}
@@ -147,7 +169,7 @@ const Checkout = () => {
                 address={address}
                 setAddress={setAddress}
                 setStep={setStep}
-                user={dummyUser}
+                user={user}
               />
             )}
 

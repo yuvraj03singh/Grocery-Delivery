@@ -26,4 +26,3 @@ const sendEmail = async ({ to, subject, body }: SendEmailArgs) => {
 };
 
 export default sendEmail;
-   

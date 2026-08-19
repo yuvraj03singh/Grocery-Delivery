@@ -41,8 +41,8 @@ const checkLowStock = inngest.createFunction(
             async () => {
                 const adminEmails = process.env.ADMIN_EMAILS
                     ? process.env.ADMIN_EMAILS
-                          .split(",")
-                          .map((e) => e.trim())
+                        .split(",")
+                        .map((e) => e.trim())
                     : [];
 
                 if (adminEmails.length === 0) {
@@ -76,13 +76,13 @@ const checkLowStock = inngest.createFunction(
                     </div>`,
                 })
 
-            
 
-               
+
+
             }
         );
 
-        return {alerted:true ,product :product.name,stock:product.stock};
+        return { alerted: true, product: product.name, stock: product.stock };
     }
 );
 
@@ -139,19 +139,19 @@ const sendMonthlyOfferEmail = inngest.createFunction(
 
                     <table width="100%" cellpadding="0" cellspacing="0">
                         ${deals
-                            .reduce((rows: any[], _deal, index: number) => {
-                                if (index % 3 === 0) {
-                                    rows.push(deals.slice(index, index + 3));
-                                }
+                                .reduce((rows: any[], _deal, index: number) => {
+                                    if (index % 3 === 0) {
+                                        rows.push(deals.slice(index, index + 3));
+                                    }
 
-                                return rows;
-                            }, [])
-                            .map(
-                                (row: any[]) => `
+                                    return rows;
+                                }, [])
+                                .map(
+                                    (row: any[]) => `
                                 <tr>
                                     ${row
-                                        .map(
-                                            (product: any) => `
+                                            .map(
+                                                (product: any) => `
                                             <td style="width: 33%; padding: 8px; vertical-align: top;">
                                                 <div style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; text-align: center;">
                                                     ${product.image ? `<img src="${product.image}" alt="${product.name}" style="width: 100%; height: 100px; object-fit: cover;" />` : ""}
@@ -166,11 +166,11 @@ const sendMonthlyOfferEmail = inngest.createFunction(
                                                     </div>
                                                 </div>
                                             </td>`
-                                        )
-                                        .join("")}
+                                            )
+                                            .join("")}
                                 </tr>`
-                            )
-                            .join("")}
+                                )
+                                .join("")}
                     </table>
 
                     <div style="text-align: center; margin-top: 24px;">
@@ -270,9 +270,9 @@ const autoAssignRider = inngest.createFunction(
                 riderName: availableRider.name,
                 otp,
             };
-        
+
         });
-        
+
     }
 );
 

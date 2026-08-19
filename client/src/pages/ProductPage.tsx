@@ -1,7 +1,6 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import type { Product } from "../types";
-import { dummyProducts } from "../assets/assets";
 import Loading from "../components/Loading";
 import { useCart } from "../context/CartContext";
 
@@ -18,6 +17,8 @@ import {
 } from "lucide-react";
 import DummyReviewsSection from "../assets/DummyReviewsSection";
 import ProductCard from "../components/ProductCard";
+import api from "../config/api";
+import { toast } from "react-hot-toast/headless";
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -25,18 +26,34 @@ const ProductPage = () => {
   const { addToCart, items } = useCart();
 
   const [product, setProduct] = useState<Product | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     const fetchProduct = async () => {
       setLoading(true);
+      setQuantity(1);
       window.scrollTo(0, 0);
 
-      const foundProduct = dummyProducts.find((p: Product) => p._id === id);
+      try {
+        const { data } = await api.get(`/products/${id}`);
+        setProduct(data.product);
 
-      setProduct(foundProduct || null);
-      setLoading(false);
+        const { data: relatedData } = await api.get(
+          `/products?category=${data.product.category}`,
+        );
+        setRelatedProducts(
+          relatedData.products.filter(
+            (relatedProduct: Product) => relatedProduct.id !== id,
+          ),
+        );
+      } catch (error: any) {
+        toast.error(error.response?.data?.message || error?.message);
+        navigate("/products");
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchProduct();
@@ -45,12 +62,7 @@ const ProductPage = () => {
   if (loading) return <Loading />;
   if (!product) return null;
 
-  const inCart = items.some((item) => item.product._id === product._id);
-  const relatedProducts = dummyProducts.filter(
-    (relatedProduct) =>
-      relatedProduct.category === product.category &&
-      relatedProduct._id !== product._id,
-  );
+  const inCart = items.some((item) => item.product.id === product.id);
   const categoryLabel = product.category
     .replace(/-/g, " ")
     .replace(/\b\w/g, (c) => c.toUpperCase());
@@ -231,10 +243,7 @@ const ProductPage = () => {
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 xl:gap-8">
               {relatedProducts.slice(0, 5).map((relatedProduct) => (
-                <ProductCard
-                  key={relatedProduct._id}
-                  product={relatedProduct}
-                />
+                <ProductCard key={relatedProduct.id} product={relatedProduct} />
               ))}
             </div>
           </section>

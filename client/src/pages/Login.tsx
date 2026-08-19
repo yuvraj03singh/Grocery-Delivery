@@ -8,6 +8,9 @@ import {
   MailIcon,
   Loader2Icon,
 } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+
+
 
 export const Login = () => {
   const [isLoginState, setIsLoginState] = useState(true);
@@ -15,11 +18,22 @@ export const Login = () => {
   const [email, setEmail] = useState(""); //help to set thr email
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false); //it help to tell the request is loading or not
+  const { login, register } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => (window.location.href = "/"), 1000);
+    try {
+      if (isLoginState) {
+        await login(email, password);
+      } else {
+        await register(name, email, password);
+      }
+    } catch (error: any) {
+      console.error("Login error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

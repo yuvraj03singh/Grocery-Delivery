@@ -15,14 +15,10 @@ import {
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
-  const [user, setUser] = useState<any>({
-    name: "aashu",
-    email: "aashu@gmail.com",
-    isAdmin: true,
-  });
-
+  const { user, logout } = useAuth();
   const { cartCount, setIsCartOpen } = useCart();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -39,7 +35,7 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    setUser(null);
+    logout();
     setUserMenuOpen(false);
     navigate("/");
     // Implement logout logic here (e.g., clear user session, redirect to login page)

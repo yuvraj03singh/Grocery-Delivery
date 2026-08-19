@@ -30,6 +30,15 @@ step-6 sync with the inngest
 
 
 
+#integerate the backend and frontend
+step-1  install npm axios in the client(frontend)
+
+step-2 vite_base_url add in the .env of the client folder and paste the backend url where the backend server is running
+
+step-3 create config folder in the client and create api.ts file add there axios and server api
+
+
+
         
 
 

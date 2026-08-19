@@ -1,8 +1,8 @@
 import { KeyRoundIcon } from "lucide-react";
 
 export default function OrderOTP({ order }: { order: any }) {
-  if (order?.status === "Delivered") return null;
-  const otp = order.deliveryOtp || "754730";
+  if (order?.status === "Delivered" || !order?.deliveryOtp) return null;
+  const otp = order.deliveryOtp;
 
   return (
     <div className="bg-[#224233] rounded-2xl p-6 text-white shadow-xs">

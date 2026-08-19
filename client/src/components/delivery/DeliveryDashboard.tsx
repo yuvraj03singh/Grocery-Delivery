@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { PackageIcon, NavigationIcon } from "lucide-react";
 import OtpModal from "./OtpModal";
 import CancelModal from "./CancelModal";
 import DeliveryOrderCard from "./DeliveryOrderCard";
 import Loading from "../../components/Loading";
 import type { Order } from "../../types";
-import { dummyDashboardOrdersData } from "../../assets/assets";
+import api from "../../config/api";
+import toast from "react-hot-toast";
 
 export default function DeliveryDashboard() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -21,39 +22,100 @@ export default function DeliveryDashboard() {
   // Cancel modal
   const [cancelModal, setCancelModal] = useState<string | null>(null);
   const [cancelReason, setCancelReason] = useState("");
+  
+  const watchIdRef = useRef<number | null>(null);
 
   const fetchOrders = async () => {
     setLoading(true);
-    setOrders(dummyDashboardOrdersData as any);
-    setLoading(false);
+    try {
+      const { data } = await api.get(`/delivery/my-deliveries?status=${tab}`);
+      setOrders(data.orders || []);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to load deliveries");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchOrders();
   }, [tab]);
 
+  // Send location every 10s for active deliveries
+  useEffect(() => {
+    const activeOrders = orders.filter((o) => ["Assigned", "Packed", "Out for Delivery"].includes(o.status));
+    
+    if (activeOrders.length === 0 && !tracking) {
+      if (watchIdRef.current !== null) {
+        navigator.geolocation.clearWatch(watchIdRef.current);
+        watchIdRef.current = null;
+      }
+      return;
+    }
+
+    const sendLocation = async (pos: GeolocationPosition) => {
+      const { latitude: lat, longitude: lng } = pos.coords;
+      activeOrders.forEach((order) => {
+         api.put(`/delivery/my-deliveries/${order.id}/location`, { lat, lng }).catch(() => {});
+      });
+    };
+
+    watchIdRef.current = navigator.geolocation.watchPosition(sendLocation, () => {}, { enableHighAccuracy: true, maximumAge: 10000, timeout: 5000 });
+
+    // Also send on an interval for more consistent updates
+    const interval = setInterval(() => {
+      navigator.geolocation.getCurrentPosition(sendLocation, () => {}, { enableHighAccuracy: true });
+    }, 10000);
+
+    return () => {
+      if (watchIdRef.current !== null) {
+        navigator.geolocation.clearWatch(watchIdRef.current);
+        watchIdRef.current = null;  
+      }
+      clearInterval(interval);
+    }
+  }, [orders, tracking]);
+
   const handleUpdateStatus = async (orderId: string, status: string) => {
-    console.log(orderId, status);
+    try {
+      await api.put(`/delivery/my-deliveries/${orderId}/status`, { status });
+      toast.success("Order status updated");
+      fetchOrders();
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to update status");
+    }
   };
 
   const handleComplete = async () => {
     if (!otpModal || !otp) return;
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
+    try {
+      await api.put(`/delivery/my-deliveries/${otpModal}/complete`, { otp });
+      toast.success("Order completed successfully!");
       setOtpModal(null);
       setOtp("");
-    }, 1000);
+      fetchOrders();
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to complete order. Invalid OTP?");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleCancel = async () => {
-    if (!cancelModal) return;
+    if (!cancelModal || !cancelReason) return;
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
+    try {
+      await api.put(`/delivery/my-deliveries/${cancelModal}/cancel`, { otp, reason: cancelReason });
+      toast.success("Order cancelled");
       setCancelModal(null);
       setCancelReason("");
-    }, 1000);
+      fetchOrders();
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to cancel order. Invalid OTP?");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -101,7 +163,7 @@ export default function DeliveryDashboard() {
         <div className="space-y-4">
           {orders.map((order) => (
             <DeliveryOrderCard
-              key={order._id}
+              key={order.id}
               order={order}
               tab={tab}
               handleUpdateStatus={handleUpdateStatus}

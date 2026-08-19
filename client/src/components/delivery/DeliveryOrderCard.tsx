@@ -1,8 +1,11 @@
+import { useState } from "react";
 import {
   CircleAlertIcon,
   MapPinIcon,
   NavigationIcon,
   PhoneIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
 } from "lucide-react";
 import type { Dispatch, SetStateAction } from "react";
 import type { Order } from "../../types";
@@ -24,6 +27,7 @@ export default function DeliveryOrderCard({
   setCancelModal,
 }: DeliveryOrderCardProps) {
   const customer = typeof order.user === "string" ? null : order.user;
+  const [showDetails, setShowDetails] = useState(false);
 
   return (
     <article className="bg-white rounded-2xl border border-app-border p-5 shadow-sm">
@@ -31,7 +35,7 @@ export default function DeliveryOrderCard({
         <div className="space-y-3 min-w-0">
           <div className="flex flex-wrap items-center gap-2">
             <h3 className="text-lg font-semibold text-zinc-900">
-              Order {order._id.slice(-6)}
+              Order {order.id.slice(-6)}
             </h3>
             <span
               className={`px-2.5 py-1 rounded-full text-xs font-semibold ${statusColors[order.status] || "bg-zinc-100 text-zinc-600"}`}
@@ -64,15 +68,34 @@ export default function DeliveryOrderCard({
         <div className="flex flex-wrap gap-2 lg:justify-end">
           {tab === "active" ? (
             <>
+              {order.status === "Assigned" && (
+                <button
+                  onClick={() => handleUpdateStatus(order.id, "Packed")}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-app-green text-white text-sm font-medium hover:bg-app-green-light transition-colors"
+                >
+                  Mark as Packed
+                </button>
+              )}
+              {order.status === "Packed" && (
+                <button
+                  onClick={() => handleUpdateStatus(order.id, "Out for Delivery")}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-app-green text-white text-sm font-medium hover:bg-app-green-light transition-colors"
+                >
+                  <NavigationIcon className="size-4" />
+                  Out for Delivery
+                </button>
+              )}
+              {order.status === "Out for Delivery" && (
+                <button
+                  onClick={() => setOtpModal(order.id)}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-app-green text-white text-sm font-medium hover:bg-app-green-light transition-colors"
+                >
+                  Complete
+                </button>
+              )}
+              
               <button
-                onClick={() => setOtpModal(order._id)}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-app-green text-white text-sm font-medium hover:bg-app-green-light transition-colors"
-              >
-                <NavigationIcon className="size-4" />
-                Complete
-              </button>
-              <button
-                onClick={() => setCancelModal(order._id)}
+                onClick={() => setCancelModal(order.id)}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-app-border text-zinc-700 text-sm font-medium hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-colors"
               >
                 Cancel
@@ -80,14 +103,35 @@ export default function DeliveryOrderCard({
             </>
           ) : (
             <button
-              onClick={() => handleUpdateStatus(order._id, "Delivered")}
+              onClick={() => setShowDetails(!showDetails)}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-app-border text-zinc-700 text-sm font-medium hover:bg-app-cream transition-colors"
             >
-              View
+              {showDetails ? "Hide" : "View"}
+              {showDetails ? <ChevronUpIcon className="size-4" /> : <ChevronDownIcon className="size-4" />}
             </button>
           )}
         </div>
       </div>
+
+      {showDetails && (
+        <div className="mt-4 pt-4 border-t border-app-border">
+          <h4 className="text-sm font-semibold text-zinc-900 mb-3">Order Items</h4>
+          <div className="space-y-3">
+            {order.items.map((item, index) => (
+              <div key={index} className="flex items-center gap-3">
+                <img src={item.image} alt={item.name} className="w-12 h-12 rounded-lg object-cover bg-zinc-50 border border-zinc-100" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-zinc-900 truncate">{item.name}</p>
+                  <p className="text-xs text-zinc-500">Qty: {item.quantity}</p>
+                </div>
+                <div className="text-sm font-semibold text-zinc-900">
+                  Rs {(item.price * item.quantity).toFixed(2)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </article>
   );
 }

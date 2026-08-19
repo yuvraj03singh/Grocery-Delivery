@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import type { Order } from "../types";
 import { useCart } from "../context/CartContext";
-import { dummyDashboardOrdersData, statusColors } from "../assets/assets";
+import { statusColors } from "../assets/assets";
 import Loading from "../components/Loading";
 import { ChevronRightIcon, CalendarIcon, PackageIcon } from "lucide-react";
 import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast/headless";
+import api from "../config/api";
 
 const MyOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -18,8 +20,16 @@ const MyOrders = () => {
   const { clearCart } = useCart();
 
   const fetchOrders = async () => {
-    setOrders(dummyDashboardOrdersData as any);
-    setLoading(false);
+    setLoading(true);
+    try {
+      const params = activeTab === "All" ? "" : `?status=${encodeURIComponent(activeTab)}`;
+      const { data } = await api.get(`/orders${params}`);
+      setOrders(data.orders);
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || error?.message || "Unable to fetch orders");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -37,8 +47,8 @@ const MyOrders = () => {
     activeTab.toLowerCase() === "all"
       ? orders
       : orders.filter(
-          (o) => o.status.toLowerCase() === activeTab.toLowerCase(),
-        );
+        (o) => o.status.toLowerCase() === activeTab.toLowerCase(),
+      );
 
   return (
     <div className="min-h-screen bg-app-cream mb-20">
@@ -53,11 +63,10 @@ const MyOrders = () => {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors duration-200 ${
-                activeTab.toLowerCase() === tab.toLowerCase()
+              className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors duration-200 ${activeTab.toLowerCase() === tab.toLowerCase()
                   ? "bg-app-green text-white"
                   : "bg-white text-app-text-light hover:bg-app-cream-dark border border-app-border"
-              }`}
+                }`}
             >
               {tab.toLowerCase() === "all" ? "All orders" : tab}
             </button>
@@ -87,8 +96,8 @@ const MyOrders = () => {
           <div className="space-y-4">
             {filteredOrders.map((order) => (
               <Link
-                key={order._id}
-                to={`/orders/${order._id}`}
+                key={order.id}
+                to={`/orders/${order.id}`}
                 className="block max-w-4xl bg-white rounded-2xl p-5 hover:shadow-md transition-all border border-app-border/50"
               >
                 {/* Order details */}
@@ -96,20 +105,17 @@ const MyOrders = () => {
                   {/*left*/}
                   <div>
                     <p className="text-sm font-medium text-app-green">
-                      Order #{order._id.slice(-8).toUpperCase()}
+                      Order #{order.id.slice(-8).toUpperCase()}
                     </p>
 
                     <div className="flex items-center gap-2 mt-1">
                       <CalendarIcon className="size-3 text-app-text-light" />
                       <span className="text-xs text-app-text-light">
-                        {new Date(order.createdAt).toLocaleDateString(
-                          "en-US",
-                          {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          },
-                        )}
+                        {new Date(order.createdAt).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
                       </span>
                     </div>
                   </div>
@@ -117,10 +123,9 @@ const MyOrders = () => {
                   {/*right*/}
                   <div className="flex items-center gap-2">
                     <span
-                      className={`px-4 py-1 text-xs font-medium rounded-full ${
-                        statusColors[order.status] ||
+                      className={`px-4 py-1 text-xs font-medium rounded-full ${statusColors[order.status] ||
                         "bg-gray-100 text-gray-800"
-                      }`}
+                        }`}
                     >
                       {order.status}
                     </span>

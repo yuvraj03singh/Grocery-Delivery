@@ -36,19 +36,17 @@ export default function OrderTimeLine({ order }: { order: any }) {
               {/* Stepper Icon & Connecting Line */}
               <div className="flex flex-col items-center">
                 <div
-                  className={`size-9 rounded-full flex-center shrink-0 transition-all duration-300 ${
-                    isCompleted
+                  className={`size-9 rounded-full flex-center shrink-0 transition-all duration-300 ${isCompleted
                       ? "bg-app-green text-white shadow-xs"
                       : "bg-app-cream text-app-text-light border border-app-border"
-                  } ${isCurrent ? "ring-4 ring-app-green/20 scale-105" : ""}`}
+                    } ${isCurrent ? "ring-4 ring-app-green/20 scale-105" : ""}`}
                 >
                   <Icon className="size-4.5" />
                 </div>
                 {!isLast && (
                   <div
-                    className={`w-0.5 my-1 min-h-[36px] transition-colors duration-300 ${
-                      i < currentIdx ? "bg-app-green" : "bg-app-border"
-                    }`}
+                    className={`w-0.5 my-1 min-h-[36px] transition-colors duration-300 ${i < currentIdx ? "bg-app-green" : "bg-app-border"
+                      }`}
                   />
                 )}
               </div>
