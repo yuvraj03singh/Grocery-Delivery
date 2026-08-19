@@ -26,6 +26,8 @@ step-4 add new project in the vercel and choose directory server(backend part) o
 
 step-5 paste env file to the to vercel
 
+step-6 sync with the inngest
+
 
 
         
