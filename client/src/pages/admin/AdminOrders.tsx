@@ -31,7 +31,7 @@ export default function AdminOrders() {
       setPartners(data.partners.filter((p: DeliveryPartner) => p.isActive));
     } catch (error) {
       console.error("Error fetching partners:", error);
-      setPartners(dummyDeliveryPartnerData as any);
+      setPartners([]);
     }
   };
 

@@ -22,11 +22,16 @@ const MyOrders = () => {
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const params = activeTab === "All" ? "" : `?status=${encodeURIComponent(activeTab)}`;
+      const params =
+        activeTab === "All" ? "" : `?status=${encodeURIComponent(activeTab)}`;
       const { data } = await api.get(`/orders${params}`);
       setOrders(data.orders);
     } catch (error: any) {
-      toast.error(error.response?.data?.message || error?.message || "Unable to fetch orders");
+      toast.error(
+        error.response?.data?.message ||
+          error?.message ||
+          "Unable to fetch orders",
+      );
     } finally {
       setLoading(false);
     }
@@ -47,8 +52,8 @@ const MyOrders = () => {
     activeTab.toLowerCase() === "all"
       ? orders
       : orders.filter(
-        (o) => o.status.toLowerCase() === activeTab.toLowerCase(),
-      );
+          (o) => o.status.toLowerCase() === activeTab.toLowerCase(),
+        );
 
   return (
     <div className="min-h-screen bg-app-cream mb-20">
@@ -63,10 +68,11 @@ const MyOrders = () => {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors duration-200 ${activeTab.toLowerCase() === tab.toLowerCase()
+              className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors duration-200 ${
+                activeTab.toLowerCase() === tab.toLowerCase()
                   ? "bg-app-green text-white"
                   : "bg-white text-app-text-light hover:bg-app-cream-dark border border-app-border"
-                }`}
+              }`}
             >
               {tab.toLowerCase() === "all" ? "All orders" : tab}
             </button>
@@ -123,9 +129,10 @@ const MyOrders = () => {
                   {/*right*/}
                   <div className="flex items-center gap-2">
                     <span
-                      className={`px-4 py-1 text-xs font-medium rounded-full ${statusColors[order.status] ||
+                      className={`px-4 py-1 text-xs font-medium rounded-full ${
+                        statusColors[order.status] ||
                         "bg-gray-100 text-gray-800"
-                        }`}
+                      }`}
                     >
                       {order.status}
                     </span>

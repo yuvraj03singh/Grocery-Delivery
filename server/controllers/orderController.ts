@@ -53,6 +53,8 @@ export const createOrder = async (req: Request, res: Response) => {
         const tax = Math.round(subTotal * 0.08 * 100) / 100;
         const total = Math.round((subTotal + deliveryFee + tax) * 100) / 100;
 
+
+
         const order = await prisma.order.create({
             data: {
                 userId: req.user?.id as string,
@@ -80,7 +82,7 @@ export const createOrder = async (req: Request, res: Response) => {
                             product_data: {
                                 name: "Payment Grocery",
                             },
-                            unit_amount: Math.round(total * 100)
+                            unit_amount: Math.max(Math.round(total * 100), 5000)
                         },
                         quantity: 1,
                     },

@@ -5,6 +5,7 @@ import authRouter from "./routes/authRoutes.js";
 import productRouter from "./routes/productRoutes.js";
 import uploadRouter from "./routes/uploadRoutes.js";
 import orderRouter from "./routes/orderRoutes.js";
+import { stripeWebhook } from "./controllers/webhooks.js";
 import { serve } from "inngest/express"
 import { inngest, functions } from "./inngest/index.js";
 import addressRouter from "./routes/addressRoutes.js";
@@ -16,6 +17,9 @@ import deliveryPartnerRouter from "./routes/deliveryPartnerRoutes.js";
 const app = express();
 
 app.use(cors());
+
+app.post('/webhook', express.raw({ type: 'application/json' }), stripeWebhook);
+
 app.use(express.json());
 
 

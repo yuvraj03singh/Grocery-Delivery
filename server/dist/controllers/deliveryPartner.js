@@ -65,7 +65,7 @@ export const completeDelivery = async (req, res) => {
     const order = await prisma.order.findUnique({
         where: { id: req.params.id, deliveryPartnerId: req.partner.id }
     });
-    if (!order || order.status !== "Cancelled" && order.status !== "Delivered") {
+    if (!order || order.status === "Cancelled" || order.status === "Delivered") {
         return res.status(404).json({ message: "Order not found or already completed" });
     }
     if (order.deliveryOtp !== otp) {
@@ -95,7 +95,7 @@ export const cancelDelivery = async (req, res) => {
     const order = await prisma.order.findFirst({
         where: { id: req.params.id, deliveryPartnerId: req.partner.id }
     });
-    if (!order || order.status !== "Cancelled" && order.status !== "Delivered") {
+    if (!order || order.status === "Cancelled" || order.status === "Delivered") {
         return res.status(404).json({ message: "Order not found or already completed" });
     }
     if (order.deliveryOtp !== otp) {

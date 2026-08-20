@@ -29,8 +29,6 @@ const Checkout = () => {
   const { items, cartTotal, clearCart } = useCart();
   const { user } = useAuth();
 
-
-
   const [address, setAddress] = useState<Address>({
     id: "",
     label: "Home",
@@ -54,25 +52,25 @@ const Checkout = () => {
     label: string;
     icon: typeof MapPinIcon;
   }> = [
-      {
-        key: "address",
-        label: "Address",
-        icon: MapPinIcon,
-      },
-      {
-        key: "payment",
-        label: "Payment",
-        icon: CreditCardIcon,
-      },
-      {
-        key: "review",
-        label: "Review",
-        icon: CheckIcon,
-      },
-    ];
+    {
+      key: "address",
+      label: "Address",
+      icon: MapPinIcon,
+    },
+    {
+      key: "payment",
+      label: "Payment",
+      icon: CreditCardIcon,
+    },
+    {
+      key: "review",
+      label: "Review",
+      icon: CheckIcon,
+    },
+  ];
 
   const handlePlaceOrder = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const orderData = {
         items: items.map((item) => ({
@@ -93,7 +91,11 @@ const Checkout = () => {
       toast.success("Order placed successfully");
       navigate(`/orders/${data.orderId}`);
     } catch (error: any) {
-      toast.error(error.response?.data?.message || error?.message || "Failed to place order");
+      toast.error(
+        error.response?.data?.message ||
+          error?.message ||
+          "Failed to place order",
+      );
     } finally {
       setLoading(false);
       scrollTo(0, 0);
@@ -104,7 +106,8 @@ const Checkout = () => {
     const userAddresses = user?.addresses ?? [];
 
     if (userAddresses.length > 0) {
-      const defaultAddr = userAddresses.find((a) => a.isDefault) || userAddresses[0];
+      const defaultAddr =
+        userAddresses.find((a) => a.isDefault) || userAddresses[0];
 
       setAddress({
         id: defaultAddr?.id ?? "",
@@ -143,10 +146,11 @@ const Checkout = () => {
               <div key={s.key} className="flex items-center gap-2">
                 <button
                   onClick={() => setStep(s.key)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${step === s.key
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+                    step === s.key
                       ? "bg-app-green text-white"
                       : "bg-app-cream text-app-text-light hover:bg-app-green/10 hover:text-app-green"
-                    }`}
+                  }`}
                 >
                   <Icon className="size-5" />
                   {s.label}

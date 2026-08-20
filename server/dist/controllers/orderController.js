@@ -1,72 +1,98 @@
 import { prisma } from "../config/prisma.js";
 import { inngest } from "../inngest/index.js";
+import Stripe from "stripe";
 export const createOrder = async (req, res) => {
-    const { items, shippingAddress, paymentMethod } = req.body;
-    if (!items || items.length === 0) {
-        return res.status(400).json({ message: 'Order cannot be empty' });
-    }
-    //lookup product details from database and calculate total price
-    const productIds = items.map((item) => item.product);
-    const products = await prisma.product.findMany({
-        where: { id: { in: productIds } }
-    });
-    const productMap = {};
-    products.forEach((product) => {
-        productMap[product.id] = product;
-    });
-    for (const item of items) {
-        const product = productMap[item.product];
-        if (!product || (product.stock ?? 0) < item.quantity) {
-            return res.status(400).json({ message: `Product with id ${item.product} not found or insufficient stock` });
+    try {
+        const { items, shippingAddress, paymentMethod } = req.body;
+        if (!items || items.length === 0) {
+            return res.status(400).json({ message: 'Order cannot be empty' });
         }
-    }
-    const orderItems = items.map((item) => {
-        const dbProduct = productMap[item.product];
-        if (!dbProduct) {
-            throw new Error(`Product with id ${item.product} not found`);
-        }
-        return {
-            product: dbProduct.id,
-            name: dbProduct.name,
-            image: dbProduct.image,
-            price: dbProduct.price,
-            quantity: item.quantity,
-            unit: dbProduct.unit
-        };
-    });
-    const subTotal = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const deliveryFee = subTotal > 20 ? 0 : 1.99;
-    const tax = Math.round(subTotal * 0.08 * 100) / 100;
-    const total = Math.round((subTotal + deliveryFee + tax) * 100) / 100;
-    const order = await prisma.order.create({
-        data: {
-            userId: req.user?.id,
-            items: orderItems,
-            shippingAddress,
-            paymentMethod,
-            subtotal: subTotal,
-            deliveryFee,
-            tax,
-            total,
-            statusHistory: [{ status: "Placed", note: "Order placed successfully", timestamp: new Date() }]
-        }
-    });
-    if (paymentMethod === "Card") {
-        //stripe payment link
-    }
-    res.json({ order });
-    //decrease stock of products
-    for (const item of orderItems) {
-        await prisma.product.update({
-            where: { id: item.product },
-            data: { stock: { decrement: item.quantity } }
+        //lookup product details from database and calculate total price
+        const productIds = items.map((item) => item.product);
+        const products = await prisma.product.findMany({
+            where: { id: { in: productIds } }
         });
+        const productMap = {};
+        products.forEach((product) => {
+            productMap[product.id] = product;
+        });
+        for (const item of items) {
+            const product = productMap[item.product];
+            if (!product || (product.stock ?? 0) < item.quantity) {
+                return res.status(400).json({ message: `Product with id ${item.product} not found or insufficient stock` });
+            }
+        }
+        const orderItems = items.map((item) => {
+            const dbProduct = productMap[item.product];
+            if (!dbProduct) {
+                throw new Error(`Product with id ${item.product} not found`);
+            }
+            return {
+                product: dbProduct.id,
+                name: dbProduct.name,
+                image: dbProduct.image,
+                price: dbProduct.price,
+                quantity: item.quantity,
+                unit: dbProduct.unit
+            };
+        });
+        const subTotal = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const deliveryFee = subTotal > 20 ? 0 : 1.99;
+        const tax = Math.round(subTotal * 0.08 * 100) / 100;
+        const total = Math.round((subTotal + deliveryFee + tax) * 100) / 100;
+        const order = await prisma.order.create({
+            data: {
+                userId: req.user?.id,
+                items: orderItems,
+                shippingAddress,
+                paymentMethod,
+                subtotal: subTotal,
+                deliveryFee,
+                tax,
+                total,
+                statusHistory: [{ status: "Placed", note: "Order placed successfully", timestamp: new Date() }]
+            }
+        });
+        if (paymentMethod === "card") {
+            const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+            const session = await stripe.checkout.sessions.create({
+                success_url: `${req.headers.origin || 'http://localhost:5173'}/orders?clearCart=true`,
+                cancel_url: `${req.headers.origin || 'http://localhost:5173'}/checkout`,
+                line_items: [
+                    {
+                        price_data: {
+                            currency: "inr",
+                            product_data: {
+                                name: "Payment Grocery",
+                            },
+                            unit_amount: Math.max(Math.round(total * 100), 5000)
+                        },
+                        quantity: 1,
+                    },
+                ],
+                mode: 'payment',
+                metadata: { orderId: order.id }
+            });
+            return res.json({ url: session.url });
+        }
+        res.json({ order });
+        //decrease stock of products
+        for (const item of orderItems) {
+            await prisma.product.update({
+                where: { id: item.product },
+                data: { stock: { decrement: item.quantity } }
+            });
+        }
+        //send stock update event to clients via websocket
+        for (const item of orderItems) {
+            await inngest.send({ name: "inventory/stock.updates", data: { productId: item.product, quantity: item.quantity } });
+        }
+        await inngest.send({ name: "order/placed", data: { orderId: order.id } });
     }
-    //send stock update event to clients via websocket
-    for (const item of orderItems) {
-        await inngest.send({ name: "inventory/stock.updates", data: { productId: item.product, quantity: item.quantity } });
+    catch (error) {
+        console.error("Order Creation Error:", error);
+        res.status(500).json({ message: "Failed to create order", error: error.message, stack: error.stack });
     }
-    await inngest.send({ name: "order/placed", data: { orderId: order.id } });
 };
 //get orders for user
 //get/api/orders
