@@ -19,6 +19,12 @@ export default function DeliveryLogin() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        
+        if (!email.toLowerCase().endsWith('@gmail.com')) {
+            toast.error("Only @gmail.com email addresses are allowed");
+            return;
+        }
+
         setLoading(true);
 
         try {

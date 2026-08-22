@@ -1,0 +1,44 @@
+Blinkit Clone - Project Details
+
+Overview
+--------
+This project is a full-stack e-commerce web application, modeled after "Blinkit" (a quick-commerce grocery delivery platform). It features a modern, responsive frontend and a robust backend to handle users, products, orders, payments, and real-time order tracking.
+
+Project Structure
+-----------------
+The repository is divided into two main parts:
+1. client/ (Frontend)
+2. server/ (Backend)
+
+Frontend Architecture & Technologies (Client)
+---------------------------------------------
+- Framework: React.js with TypeScript, built using Vite.
+- Styling: Tailwind CSS for rapid UI development.
+- Routing: React Router (react-router-dom) for page navigation.
+- Maps & Tracking: Leaflet and React-Leaflet for displaying live delivery maps.
+- Animations: Framer Motion for smooth UI transitions.
+- Icons: Lucide React and React Simple Icons.
+- API Communication: Axios for making HTTP requests to the backend server.
+- Notifications: React Hot Toast for user alerts.
+- State Management: Context API (e.g., AuthContext) for global state.
+
+Backend Architecture & Technologies (Server)
+--------------------------------------------
+- Framework: Node.js with Express.js (TypeScript).
+- Database: Neon Serverless Postgres.
+- ORM: Prisma (with Neon adapter) for data modeling and queries.
+- Authentication: JSON Web Tokens (JWT) and bcrypt for password hashing.
+- Payment Gateway: Stripe for processing transactions.
+- Background Jobs: Inngest for automating background tasks and workflows.
+- File Uploads: Cloudinary integration with Multer for handling image uploads.
+- Emails: Nodemailer for sending emails to users.
+- Deployment: Vercel configuration files (vercel.json) are present for easy hosting.
+
+Core Features (Inferred)
+------------------------
+- Secure user authentication and session management.
+- Browsing products and adding them to a cart.
+- Checkout process with Stripe payments.
+- Order placement and management.
+- Live order tracking using integrated maps.
+- User profile and address management.

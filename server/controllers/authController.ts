@@ -37,6 +37,10 @@ export const register = async (req: Request, res: Response) => {
         return res.status(400).json({ message: "Please provide all required fields" });
     }
 
+    if (!email.toLowerCase().endsWith('@gmail.com')) {
+        return res.status(400).json({ message: "Only @gmail.com email addresses are allowed" });
+    }
+
     const existingUser = await prisma.user.findUnique({
         where: {
             email: email.toLowerCase()
@@ -72,6 +76,10 @@ export const login = async (req: Request, res: Response) => {
 
     if (!email || !password) {
         return res.status(400).json({ message: "Please provide all required fields" });
+    }
+
+    if (!email.toLowerCase().endsWith('@gmail.com')) {
+        return res.status(400).json({ message: "Only @gmail.com email addresses are allowed" });
     }
 
     const user = await prisma.user.findUnique({

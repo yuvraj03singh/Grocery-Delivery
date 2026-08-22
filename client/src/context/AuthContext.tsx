@@ -34,6 +34,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
+    if (!email.toLowerCase().endsWith('@gmail.com')) {
+      toast.error("Only @gmail.com email addresses are allowed");
+      throw new Error("Invalid email domain");
+    }
     try {
       const { data } = await api.post("/auth/login", { email, password });
       setUser(data.user);
@@ -44,9 +48,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       navigate("/");
     } catch (error: any) {
       toast.error(error?.response?.data?.message || error?.message);
+      throw error;
     }
   };
   const register = async (name: string, email: string, password: string) => {
+    if (!email.toLowerCase().endsWith('@gmail.com')) {
+      toast.error("Only @gmail.com email addresses are allowed");
+      throw new Error("Invalid email domain");
+    }
     try {
       const { data } = await api.post("/auth/register", {
         name,
@@ -61,6 +70,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       navigate("/");
     } catch (error: any) {
       toast.error(error?.response?.data?.message || error?.message);
+      throw error;
     }
   };
 

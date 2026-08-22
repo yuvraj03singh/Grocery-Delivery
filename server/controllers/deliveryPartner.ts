@@ -17,6 +17,10 @@ export const loginPartner = async (req: Request, res: Response) => {
         return res.status(400).json({ message: "Email and password are required" });
     }
 
+    if (!email.toLowerCase().endsWith('@gmail.com')) {
+        return res.status(400).json({ message: "Only @gmail.com email addresses are allowed" });
+    }
+
     const partner = await prisma.deliveryPartner.findUnique({
         where: { email: email.toLowerCase() }
     })

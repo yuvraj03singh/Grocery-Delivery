@@ -13,6 +13,7 @@ export default function AdminOrders() {
   const [loading, setLoading] = useState(true);
   const [assignModal, setAssignModal] = useState<string | null>(null);
   const [selectedPartner, setSelectedPartner] = useState("");
+  const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
 
   const fetchOrders = async () => {
     try {
@@ -118,12 +119,18 @@ export default function AdminOrders() {
                     className="hover:bg-zinc-50/50 transition-colors"
                   >
                     <td className="px-6 py-4">
-                      <p className="font-semibold text-zinc-900">
-                        #{order.id.slice(-6)}
-                      </p>
-                      <p className="text-xs text-zinc-500">
-                        {new Date(order.createdAt).toLocaleString()}
-                      </p>
+                      <button 
+                        onClick={() => setSelectedOrder(order)}
+                        className="text-left group"
+                      >
+                        <p className="font-semibold text-zinc-900 group-hover:text-app-green transition-colors">
+                          #{order.id.slice(-6)}
+                        </p>
+                        <p className="text-xs text-zinc-500">
+                          {new Date(order.createdAt).toLocaleString()}
+                        </p>
+                        <span className="text-[10px] text-app-green mt-1 font-medium underline opacity-0 group-hover:opacity-100 transition-opacity">View Details</span>
+                      </button>
                     </td>
                     <td className="px-6 py-4">
                       <p className="font-medium text-zinc-900">
@@ -251,6 +258,95 @@ export default function AdminOrders() {
                 >
                   Assign
                 </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Order Details Modal */}
+      {selectedOrder && (
+        <>
+          <div
+            className="fixed inset-0 bg-app-cream/80 backdrop-blur z-50"
+            onClick={() => setSelectedOrder(null)}
+          />
+          <div className="fixed inset-0 z-50 flex-center p-4">
+            <div className="bg-white rounded-2xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-fade-in">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-lg font-semibold text-zinc-900">
+                  Order Details #{selectedOrder.id.slice(-6)}
+                </h3>
+                <button
+                  onClick={() => setSelectedOrder(null)}
+                  className="p-2 hover:bg-zinc-100 rounded-full transition-colors"
+                >
+                  <span className="sr-only">Close</span>
+                  <svg className="size-5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                {/* Items */}
+                <div>
+                  <h4 className="font-medium text-zinc-900 mb-3">Items</h4>
+                  <div className="space-y-3">
+                    {selectedOrder.items?.map((item: any, idx: number) => (
+                      <div key={idx} className="flex justify-between items-center bg-zinc-50 p-3 rounded-xl border border-zinc-100">
+                        <div className="flex items-center gap-3">
+                          <img src={item.image} alt={item.name} className="size-12 object-cover rounded-lg" />
+                          <div>
+                            <p className="text-sm font-medium text-zinc-900">{item.name}</p>
+                            <p className="text-xs text-zinc-500">{item.quantity} x {currency}{item.price}</p>
+                          </div>
+                        </div>
+                        <p className="text-sm font-semibold text-zinc-900">{currency}{(item.quantity * item.price).toFixed(2)}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Shipping & Payment */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-zinc-50 p-4 rounded-xl border border-zinc-100">
+                    <h4 className="font-medium text-zinc-900 mb-2 text-sm">Shipping Details</h4>
+                    <div className="text-sm text-zinc-600">
+                      <p>{selectedOrder.shippingAddress?.fullName}</p>
+                      <p>{selectedOrder.shippingAddress?.streetAddress}</p>
+                      <p>{selectedOrder.shippingAddress?.city}, {selectedOrder.shippingAddress?.postalCode}</p>
+                      <p>{selectedOrder.shippingAddress?.phone}</p>
+                    </div>
+                  </div>
+                  <div className="bg-zinc-50 p-4 rounded-xl border border-zinc-100">
+                    <h4 className="font-medium text-zinc-900 mb-2 text-sm">Payment Info</h4>
+                    <div className="text-sm text-zinc-600 space-y-1">
+                      <p className="flex justify-between"><span>Method:</span> <span className="font-medium capitalize">{selectedOrder.paymentMethod}</span></p>
+                      <p className="flex justify-between"><span>Status:</span> <span className="font-medium">{selectedOrder.isPaid ? 'Paid' : 'Pending'}</span></p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Summary */}
+                <div className="bg-zinc-50 p-4 rounded-xl border border-zinc-100 space-y-2 text-sm">
+                  <div className="flex justify-between text-zinc-600">
+                    <span>Subtotal</span>
+                    <span>{currency}{selectedOrder.subtotal?.toFixed(2) || '0.00'}</span>
+                  </div>
+                  <div className="flex justify-between text-zinc-600">
+                    <span>Delivery Fee</span>
+                    <span>{currency}{selectedOrder.deliveryFee?.toFixed(2) || '0.00'}</span>
+                  </div>
+                  <div className="flex justify-between text-zinc-600">
+                    <span>Tax</span>
+                    <span>{currency}{selectedOrder.tax?.toFixed(2) || '0.00'}</span>
+                  </div>
+                  <div className="flex justify-between font-semibold text-zinc-900 pt-2 border-t border-zinc-200">
+                    <span>Total</span>
+                    <span>{currency}{selectedOrder.total?.toFixed(2) || '0.00'}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

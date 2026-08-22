@@ -1,0 +1,73 @@
+BLINKIT CLONE - COMPREHENSIVE TECH STACK & INTERVIEW PREPARATION GUIDE
+========================================================================
+
+PART 1: DETAILED TECHNOLOGY STACK
+---------------------------------
+
+FRONTEND (Client-Side)
+- React.js: The core UI library used for building the user interface using a component-based architecture.
+- TypeScript: Adds static typing to JavaScript, improving developer experience and catching errors early.
+- Vite: The build tool and development server, chosen for its fast Hot Module Replacement (HMR) and optimized build process.
+- React Router DOM: Handles client-side routing, enabling navigation between different pages (Home, Orders, Dashboard, etc.) without page reloads.
+- Tailwind CSS: A utility-first CSS framework used for rapid UI styling directly within JSX.
+- Framer Motion: A library used for creating smooth, declarative animations and transitions.
+- Context API (React): Used for global state management (e.g., managing the authenticated user's state across the app).
+- Axios: A promise-based HTTP client used to make API requests to the backend server.
+- Leaflet & React-Leaflet: Open-source libraries for mobile-friendly interactive maps, used here for live order tracking and delivery partner mapping.
+- React Hot Toast: A lightweight library for displaying push notifications (toasts) to the user (e.g., "Item added to cart", "Login successful").
+- Lucide React & React Simple Icons: Used for scalable vector icons throughout the UI.
+
+BACKEND (Server-Side)
+- Node.js: The JavaScript runtime environment used to build the server.
+- Express.js: A minimal and flexible Node.js web application framework used to build the RESTful APIs.
+- TypeScript: Used on the backend as well for type safety and better maintainability.
+- Prisma ORM: A next-generation Object-Relational Mapper used to interact with the database. It provides type-safe database access and schema migrations.
+- Neon Database: A serverless Postgres database platform. Selected for its scalability and ease of integration with Prisma.
+- JSON Web Tokens (JWT): Used for secure, stateless user authentication and authorization.
+- bcrypt: A password-hashing function used to securely store user passwords in the database.
+- Stripe: A payment processing platform used to handle secure transactions and checkouts.
+- Inngest: A developer platform for building reliable background workflows, scheduled jobs, and asynchronous queues (e.g., sending emails after an order, background processing).
+- Cloudinary: A cloud-based image and video management service, used to store product images or user avatars.
+- Multer: A Node.js middleware for handling `multipart/form-data`, primarily used for uploading files (images) before sending them to Cloudinary.
+- Nodemailer: A module for Node.js to send emails (e.g., order confirmations, welcome emails).
+- CORS: Express middleware to enable Cross-Origin Resource Sharing, allowing the frontend to communicate with the backend.
+
+INFRASTRUCTURE & DEPLOYMENT
+- Vercel: Configuration files (`vercel.json`) indicate that both frontend and backend are configured to be easily deployed on Vercel's serverless platform.
+
+------------------------------------------------------------------------
+
+PART 2: PROJECT-BASED INTERVIEW QUESTIONS
+-----------------------------------------
+
+FRONTEND & REACT
+1. Why did you choose Vite over Create React App (CRA)?
+2. How did you manage global state in this application? Why Context API instead of Redux or Zustand?
+3. Can you explain how you implemented client-side routing and protected routes using React Router?
+4. How did you integrate maps using Leaflet in React? What challenges did you face with map rendering or state?
+5. How did you handle API calls and loading/error states in your React components?
+
+BACKEND & NODE.JS / EXPRESS
+6. Can you explain the flow of a request in your Express application (from Route to Controller to Database)?
+7. Why did you choose a SQL database (Postgres) over a NoSQL database (like MongoDB) for an e-commerce platform?
+8. How does Inngest help in your application? Give an example of a background job you implemented.
+9. Explain how you handled file uploads. Why use Multer and Cloudinary together instead of storing images directly on the server or database?
+10. How did you implement error handling across your Express API?
+
+DATABASE & ORM (PRISMA & NEON)
+11. What is Prisma, and what advantages does it offer over writing raw SQL queries or using an older ORM like Sequelize?
+12. Can you describe your database schema? How are Users, Orders, and Products related?
+13. What is a Serverless Database (Neon), and why is it beneficial for modern web applications?
+
+AUTHENTICATION & SECURITY
+14. Explain how JWT authentication works in your project. Where do you store the token on the client-side, and what are the security implications?
+15. How did you secure user passwords? What is the role of salt in hashing?
+16. How did you handle Cross-Origin Resource Sharing (CORS) between your frontend and backend?
+
+PAYMENTS (STRIPE)
+17. How did you integrate Stripe for payments? Explain the difference between handling payments on the client vs. the server.
+18. Did you implement Stripe Webhooks? If so, why are they necessary? (Hint: verifying successful payments asynchronously).
+
+SYSTEM DESIGN & ARCHITECTURE
+19. How would you scale this application if the number of users suddenly increased 100x?
+20. In a real-world scenario, how would you handle inventory management to prevent overselling a product that is low in stock?
