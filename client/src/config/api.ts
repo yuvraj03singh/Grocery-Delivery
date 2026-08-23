@@ -1,10 +1,21 @@
 import axios from "axios";
 
+/**
+ * Configured Axios instance used for all outgoing API requests.
+ * Uses the environment variable VITE_BASE_URL or defaults to localhost.
+ */
 const api = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL || "http://localhost:5000/api",
 })
 
-//inject jwt token in request headers
+/**
+ * Request Interceptor
+ * Automatically injects the correct JSON Web Token (JWT) into the Authorization header.
+ * 
+ * Flow:
+ * - If the endpoint starts with `/delivery`, it uses the `delivery_token`.
+ * - Otherwise, it falls back to the standard `auth_token` for customers/admins.
+ */
 
 api.interceptors.request.use((config) => {
     const isDeliveryRoute = config.url?.startsWith('/delivery');
@@ -24,7 +35,14 @@ api.interceptors.request.use((config) => {
     return config;
 })
 
-//handle auth error globally
+/**
+ * Response Interceptor
+ * Acts as a global error handler for HTTP responses.
+ * 
+ * Flow:
+ * - If a 401 Unauthorized error occurs, it clears local storage and forces a redirect to the appropriate login page.
+ * - Handles both customer auth logic and delivery partner auth logic dynamically.
+ */
 api.interceptors.response.use(
     (response) => response,
     (error) => {

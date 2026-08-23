@@ -16,6 +16,12 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+/**
+ * The AuthProvider component wraps the application and provides global authentication state.
+ * It manages the current user session, token storage, and provides methods to mutate auth state.
+ * 
+ * @param children - The child React components that will consume this context.
+ */
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
@@ -33,6 +39,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(false);
   }, []);
 
+  /**
+   * Authenticates the user with the backend API and updates local state on success.
+   * Also enforces that the email domain is `@gmail.com`.
+   * 
+   * @param email - User's email address.
+   * @param password - User's password.
+   */
   const login = async (email: string, password: string) => {
     if (!email.toLowerCase().endsWith('@gmail.com')) {
       toast.error("Only @gmail.com email addresses are allowed");
@@ -51,6 +64,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       throw error;
     }
   };
+  /**
+   * Registers a new user account with the backend API.
+   * Enforces the `@gmail.com` domain rule.
+   * 
+   * @param name - The user's full name.
+   * @param email - The user's email address.
+   * @param password - The user's password.
+   */
   const register = async (name: string, email: string, password: string) => {
     if (!email.toLowerCase().endsWith('@gmail.com')) {
       toast.error("Only @gmail.com email addresses are allowed");
@@ -74,6 +95,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  /**
+   * Clears the user session by removing tokens from local storage and resetting context state.
+   * Redirects the user back to the login page.
+   */
   const logout = () => {
     setUser(null);
     setToken(null);
@@ -81,6 +106,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem("auth_user");
     navigate("/login");
   };
+  /**
+   * Updates the authenticated user's data in the React state and local storage.
+   * 
+   * @param userData - Partial user object containing the fields to update.
+   */
   const updateUser = (userData: Partial<User>) => {
     if (user) {
       const updated = { ...user, ...userData };
@@ -97,6 +127,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
+/**
+ * Custom hook to consume the AuthContext.
+ * Must be used within a component wrapped by the `<AuthProvider>`.
+ * 
+ * @returns The authentication context value containing the user object and auth methods.
+ */
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {

@@ -8,9 +8,18 @@ const generateToken = (id: string) => {
     return jwt.sign({ id, role: "delivery" }, process.env.JWT_SECRET as string, { expiresIn: "30d" })
 
 }
-//Login delivery partner
-//post /api/delivery-partner/login
-
+/**
+ * Authenticates a delivery partner and returns a JWT.
+ * 
+ * Flow:
+ * 1. Validates required fields and domain rules (`@gmail.com`).
+ * 2. Checks if the delivery partner exists and is active.
+ * 3. Compares passwords using bcrypt.
+ * 4. Generates an auth token with role 'delivery'.
+ * 
+ * @param req - Express Request object containing `email` and `password`.
+ * @param res - Express Response object.
+ */
 export const loginPartner = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -41,9 +50,14 @@ export const loginPartner = async (req: Request, res: Response) => {
     res.json({ token, partner: partnerData });
 }
 
-//get assigned orders for delivery partner
-//get /api/delivery-partner/orders
-
+/**
+ * Fetches the assigned orders for the authenticated delivery partner.
+ * Orders can be filtered by `active` (Assigned, Packed, Out for Delivery)
+ * or `completed` (Delivered, Cancelled) statuses.
+ * 
+ * @param req - Express Request object containing optional `status` query parameter.
+ * @param res - Express Response object.
+ */
 export const getMyDeliveries = async (req: Request, res: Response) => {
     const { status } = req.query;
 
@@ -65,9 +79,13 @@ export const getMyDeliveries = async (req: Request, res: Response) => {
 }
 
 
-//get single order details for delivery partner
-//get /api/delivery-partner/orders/:id
-
+/**
+ * Retrieves the full details of a specific order assigned to the authenticated delivery partner.
+ * Includes user metadata (name, phone, email) for contact purposes.
+ * 
+ * @param req - Express Request object containing order `id`.
+ * @param res - Express Response object.
+ */
 export const getMyDeliveryDetails = async (req: Request, res: Response) => {
     const order = await prisma.order.findUnique({
         where: { id: req.params.id as string, deliveryPartnerId: req.partner!.id },
@@ -80,9 +98,13 @@ export const getMyDeliveryDetails = async (req: Request, res: Response) => {
     res.json({ order })
 }
 
-//complete delivery with order id otp
-//put /api/delivery-partner/orders/:id/complete
-
+/**
+ * Marks an order as 'Delivered'.
+ * Requires a valid OTP provided by the customer to confirm the handoff.
+ * 
+ * @param req - Express Request object containing order `id` parameter and `otp` in body.
+ * @param res - Express Response object.
+ */
 export const completeDelivery = async (req: Request, res: Response) => {
     const { otp } = req.body;
     const order = await prisma.order.findUnique({
@@ -114,9 +136,13 @@ export const completeDelivery = async (req: Request, res: Response) => {
     res.json({ message: "Order marked as delivered", order: updatedOrder })
 }
 
-//cancel delivery with order id otp
-//put /api/delivery-partner/orders/:id/cancel
-
+/**
+ * Cancels a delivery due to specified reasons (e.g., customer unavailable).
+ * Requires the order OTP for validation to prevent unauthorized cancellations.
+ * 
+ * @param req - Express Request object containing `otp` and `reason`.
+ * @param res - Express Response object.
+ */
 export const cancelDelivery = async (req: Request, res: Response) => {
     const { otp, reason } = req.body;
     const order = await prisma.order.findFirst({
@@ -147,9 +173,13 @@ export const cancelDelivery = async (req: Request, res: Response) => {
 }
 
 
-//update order status with order id
-//put /api/delivery-partner/orders/:id/status
-
+/**
+ * Progresses the order status strictly to 'Packed' or 'Out for Delivery'.
+ * This endpoint allows the delivery partner to update the order state during the delivery lifecycle.
+ * 
+ * @param req - Express Request object containing the new `status`.
+ * @param res - Express Response object.
+ */
 export const updateOrderStatus = async (req: Request, res: Response) => {
     const { status } = req.body;
     const allowedStatuses = ["Packed", "Out for Delivery"];
@@ -181,8 +211,13 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
 }
 
 
-//update live location of delivery partner
-//put /api/delivery-partner/location
+/**
+ * Updates the live GPS coordinates (latitude, longitude) of the delivery partner
+ * for active orders so the customer can track them on a map.
+ * 
+ * @param req - Express Request object containing `lat`, `lng`, and `orderId`.
+ * @param res - Express Response object.
+ */
 export const updateLocation = async (req: Request, res: Response) => {
     const { lat, lng } = req.body;
     const order = await prisma.order.findFirst({

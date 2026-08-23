@@ -15,6 +15,12 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
+/**
+ * The CartProvider component maintains the global shopping cart state.
+ * It persists cart items to local storage and exposes methods to manage the cart.
+ * 
+ * @param children - Child React components that need access to the cart.
+ */
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>(() => {
     const saved = localStorage.getItem("app_cart");
@@ -27,6 +33,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("app_cart", JSON.stringify(items));
   }, [items]);
 
+  /**
+   * Adds a product to the shopping cart. If the product is already in the cart,
+   * it increments the quantity by the specified amount.
+   * Also automatically opens the cart sidebar.
+   * 
+   * @param product - The product object to add.
+   * @param quantity - The number of units to add (defaults to 1).
+   */
   const addToCart = (product: Product, quantity: number = 1) => {
     setItems((prev) => {
       const existingItem = prev.find((item) => item.product.id === product.id);
@@ -45,10 +59,22 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setIsCartOpen(true);
   };
 
+  /**
+   * Removes an entire product entry from the shopping cart regardless of its quantity.
+   * 
+   * @param productId - The unique ID of the product to remove.
+   */
   const removeFromCart = (productId: string) => {
     setItems((prev) => prev.filter((item) => item.product.id !== productId));
   };
 
+  /**
+   * Directly sets the quantity of a specific item in the cart.
+   * If the quantity is set to 0 or less, the item is removed.
+   * 
+   * @param productId - The unique ID of the product.
+   * @param quantity - The new absolute quantity.
+   */
   const updateQuantity = (productId: string, quantity: number) => {
     if (quantity <= 0) {
       removeFromCart(productId);
@@ -62,6 +88,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
+  /**
+   * Empties the shopping cart entirely and closes the cart sidebar.
+   */
   const clearCart = () => {
     setItems([]);
     setIsCartOpen(false);
@@ -92,6 +121,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
+/**
+ * Custom hook to consume the CartContext.
+ * Must be used within a component wrapped by the `<CartProvider>`.
+ * 
+ * @returns The cart state and modifier methods.
+ */
 export function useCart() {
   const context = useContext(CartContext);
 

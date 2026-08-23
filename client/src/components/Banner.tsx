@@ -12,7 +12,7 @@ const Banner = () => {
   };
 
   return (
-    <div>
+    <div className="print:hidden">
       {bannerVisible && (
         <div className="bg-linear-to-r from-app-green via-emerald-800 to-app-green text-white text-xs sm:text-sm relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6 py-2 flex items-center justify-center gap-6">

@@ -42,7 +42,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white sticky top-0 z-50 border-b border-app-border">
+    <nav className="bg-white sticky top-0 z-50 border-b border-app-border print:hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6 h-16 flex items-center gap-8">
         {/* Logo */}
         <Link

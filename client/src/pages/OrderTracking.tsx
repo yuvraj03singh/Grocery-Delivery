@@ -2,9 +2,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import type { Order } from "../types";
 import Loading from "../components/Loading";
-import { ArrowLeftIcon, PhoneIcon, MapPinIcon, UserIcon } from "lucide-react";
+import { ArrowLeftIcon, PhoneIcon, MapPinIcon, UserIcon, DownloadIcon } from "lucide-react";
 
 import OrderOTP from "../components/OrderTracking/OrderOTP";
+import InvoicePrint from "../components/OrderTracking/InvoicePrint";
 import LiveMap from "../components/OrderTracking/LiveMap";
 import OrderTimeLine from "../components/OrderTracking/OrderTimeLine";
 import api from "../config/api";
@@ -20,6 +21,10 @@ const OrderTracking = () => {
   const [order, setOrder] = useState<Order | null>(null);
   const [liveLocation, setLiveLocation] = useState<LiveLocation | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const handleDownloadInvoice = () => {
+    window.print();
+  };
 
   useEffect(() => {
     api.get(`/orders/${id}`)
@@ -81,8 +86,8 @@ const OrderTracking = () => {
   }
 
   return (
-    <div className="min-h-screen mb-20 bg-[#FAF7F2]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen mb-20 bg-[#FAF7F2] print:bg-white print:m-0 print:p-0">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 print:hidden">
         {/* Back button */}
         <button
           onClick={() => navigate("/orders")}
@@ -108,7 +113,7 @@ const OrderTracking = () => {
             </p>
           </div>
 
-          <div>
+          <div className="flex items-center gap-3">
             <span
               className={`px-5 py-2 text-sm font-semibold rounded-full inline-block ${order.status === "Delivered"
                   ? "bg-green-100 text-green-700"
@@ -119,6 +124,14 @@ const OrderTracking = () => {
             >
               {order.status}
             </span>
+            <button
+              onClick={handleDownloadInvoice}
+              className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-xl text-sm font-semibold hover:bg-gray-50 transition-colors shadow-sm"
+              title="Download Invoice"
+            >
+              <DownloadIcon className="size-4" />
+              <span className="hidden sm:inline">Invoice</span>
+            </button>
           </div>
         </div>
 
@@ -265,6 +278,7 @@ const OrderTracking = () => {
           </div>
         </div>
       </div>
+      <InvoicePrint order={order} />
     </div>
   );
 };
