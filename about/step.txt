@@ -38,6 +38,12 @@ step-2 vite_base_url add in the .env of the client folder and paste the backend 
 step-3 create config folder in the client and create api.ts file add there axios and server api
 
 
+#integerate stripe
+step-1 go to api key and add apikey from secret key
+step-2 go to make checkout session copy the code and paste in the stripe function in the project
+step-3 install stripe in terminal
+step-4 create webhook for payment confirmation go to developer in stripe and create new webhook  and  click on the new webhook event
+step-5 add stripe webhook secret key in the .env
 
         
 

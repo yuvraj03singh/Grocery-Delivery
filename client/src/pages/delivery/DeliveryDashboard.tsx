@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import { PackageIcon, NavigationIcon } from "lucide-react";
 import OtpModal from "../../components/delivery/OtpModal";
 import CancelModal from "../../components/delivery/CancelModal";
 import DeliveryOrderCard from "../../components/delivery/DeliveryOrderCard";
 import Loading from "../../components/Loading";
 import type { Order } from "../../types";
+
 
 
 import axios from "axios";
@@ -29,6 +30,7 @@ export default function DeliveryDashboard() {
   // Cancel modal
   const [cancelModal, setCancelModal] = useState<string | null>(null);
   const [cancelReason, setCancelReason] = useState("");
+  const watchIdRef=useRef<number |null>(null)
 
   const fetchOrders = async () => {
     setLoading(true);
@@ -48,7 +50,41 @@ export default function DeliveryDashboard() {
   }, [tab]);
 
   //send location every 10s for active deliveries
-  useEffect(() => { }, [orders, tracking])
+  useEffect(() => {
+    const activeOrders = orders.filter((o) => ["Assigned","Packed","Out of delivery "].includes(o.status));
+    if (activeOrders.length === 0 && !tracking){
+      if(watchIdRef.current!==null){
+        navigator.geolocation.clearWatch(watchIdRef.current);
+        watchIdRef.current=null;
+      }
+      return;
+    }
+    const sendLocation=async(pos:GeolocationPosition)=>{
+      const {latitude:lat ,longitude:lng}=pos.coords;
+      activeOrders.forEach((order)=>{
+         axios.put(`${API_URL}/delivery/my-deliveries/${order.id}/location`,{lat,lng},getAuthHeaders()).catch(()=>{})
+      })   
+    }
+    watchIdRef.current=navigator.geolocation.watchPosition(sendLocation,()=>{},{enableHighAccuracy:true,maximumAge:10000,timeout:5000})
+
+
+    //also send a interval for more consistent update
+    const interval=setInterval(()=>{
+      navigator.geolocation.getCurrentPosition(sendLocation),
+      ()=>{},{enableHighAccuracy:true}
+    },10000)
+    
+
+    return ()=>{
+      if(watchIdRef.current!==null){
+        navigator.geolocation.clearWatch(watchIdRef.current)
+        watchIdRef.current=null;  
+      }
+      clearInterval(interval)
+    }
+  },[orders, tracking])
+    
+  
 
 
   const handleUpdateStatus = async (orderId: string, status: string) => {
