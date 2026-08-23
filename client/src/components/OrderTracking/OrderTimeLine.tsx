@@ -57,7 +57,7 @@ export default function OrderTimeLine({ order }: { order: any }) {
                   <p className={`text-sm font-semibold ${isCompleted ? "text-app-green" : "text-app-text-light"}`}>
                     {status}
                   </p>
-                  {isCurrent && (
+                  {isCurrent && status !== "Delivered" && status !== "Cancelled" && (
                     <span className="px-2 py-0.5 text-[10px] font-semibold bg-app-orange/15 text-app-orange rounded-full animate-pulse">
                       In Progress
                     </span>

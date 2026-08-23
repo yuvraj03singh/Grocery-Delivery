@@ -130,7 +130,8 @@ export const completeDelivery = async (req: Request, res: Response) => {
         data: {
             status: "Delivered",
             statusHistory: history,
-            deliveryOtp: ""
+            deliveryOtp: "",
+            isPaid: true
         }
     })
     res.json({ message: "Order marked as delivered", order: updatedOrder })
