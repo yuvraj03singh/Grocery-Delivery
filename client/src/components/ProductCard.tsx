@@ -20,7 +20,7 @@ const ProductCard = ({ product }: Props) => {
 
   return (
     <div
-      className="bg-white rounded-2xl overflow-hidden shadow hover:shadow-md transition-all duration-300 group animate-fade-in cursor-pointer"
+      className="bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden shadow hover:shadow-md transition-all duration-300 group animate-fade-in cursor-pointer"
       onClick={() => navigate(`/products/${product.id}`)}
     >
       {/* Image */}
@@ -42,7 +42,7 @@ const ProductCard = ({ product }: Props) => {
       </div>
 
       {/* Product Info */}
-      <div className="p-4 text-zinc-700">
+      <div className="p-4 text-zinc-700 dark:text-zinc-300">
         <h3 className="text-sm font-medium leading-snug mb-2 line-clamp-2">
           {product.name}
         </h3>
@@ -62,7 +62,7 @@ const ProductCard = ({ product }: Props) => {
 
         {/* Price */}
         <div className="flex items-center gap-2">
-          <span className="text-lg font-bold text-app-green">
+          <span className="text-lg font-bold text-app-green dark:text-zinc-100">
             {currency}
             {discountedPrice.toFixed(2)}
           </span>

@@ -14,10 +14,10 @@ export default function OrderTimeLine({ order }: { order: any }) {
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 border border-app-border shadow-xs">
-      <div className="flex items-center justify-between mb-6 pb-4 border-b border-app-border">
-        <h2 className="text-base font-semibold text-app-green">Delivery Progress</h2>
-        <span className="text-xs text-app-text-light font-medium">
+    <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-app-border dark:border-zinc-800 shadow-xs">
+      <div className="flex items-center justify-between mb-6 pb-4 border-b border-app-border dark:border-zinc-800">
+        <h2 className="text-base font-semibold text-app-green dark:text-zinc-100">Delivery Progress</h2>
+        <span className="text-xs text-app-text-light dark:text-zinc-400 font-medium">
           Step {Math.max(1, currentIdx + 1)} of {allStatuses.length}
         </span>
       </div>
@@ -38,14 +38,14 @@ export default function OrderTimeLine({ order }: { order: any }) {
                 <div
                   className={`size-9 rounded-full flex-center shrink-0 transition-all duration-300 ${isCompleted
                       ? "bg-app-green text-white shadow-xs"
-                      : "bg-app-cream text-app-text-light border border-app-border"
+                      : "bg-app-cream dark:bg-zinc-800 text-app-text-light dark:text-zinc-400 border border-app-border dark:border-zinc-700"
                     } ${isCurrent ? "ring-4 ring-app-green/20 scale-105" : ""}`}
                 >
                   <Icon className="size-4.5" />
                 </div>
                 {!isLast && (
                   <div
-                    className={`w-0.5 my-1 min-h-[36px] transition-colors duration-300 ${i < currentIdx ? "bg-app-green" : "bg-app-border"
+                    className={`w-0.5 my-1 min-h-[36px] transition-colors duration-300 ${i < currentIdx ? "bg-app-green" : "bg-app-border dark:bg-zinc-800"
                       }`}
                   />
                 )}
@@ -54,7 +54,7 @@ export default function OrderTimeLine({ order }: { order: any }) {
               {/* Status Content */}
               <div className={`pb-6 ${isLast ? "pb-0" : ""}`}>
                 <div className="flex items-center gap-2">
-                  <p className={`text-sm font-semibold ${isCompleted ? "text-app-green" : "text-app-text-light"}`}>
+                  <p className={`text-sm font-semibold ${isCompleted ? "text-app-green dark:text-zinc-100" : "text-app-text-light dark:text-zinc-400"}`}>
                     {status}
                   </p>
                   {isCurrent && status !== "Delivered" && status !== "Cancelled" && (
@@ -64,14 +64,14 @@ export default function OrderTimeLine({ order }: { order: any }) {
                   )}
                 </div>
                 {historyEntry && (
-                  <p className="text-xs text-app-text-light mt-0.5 font-medium">
+                  <p className="text-xs text-app-text-light dark:text-zinc-400 mt-0.5 font-medium">
                     {new Date(historyEntry.timestamp).toLocaleString("en-US", {
                       month: "short",
                       day: "numeric",
                       hour: "2-digit",
                       minute: "2-digit",
                     })}
-                    {historyEntry.note && <span className="text-app-text/60 ml-1.5">• {historyEntry.note}</span>}
+                    {historyEntry.note && <span className="text-app-text/60 dark:text-zinc-500 ml-1.5">• {historyEntry.note}</span>}
                   </p>
                 )}
               </div>

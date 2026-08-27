@@ -22,7 +22,7 @@ const HomeCategories = () => {
             >
               <div
                 className="size-18 sm:size-26 sm:p-2 rounded-2xl
-                     overflow-hidden bg-orange-100 group-hover:ring-2 ring-orange-300/75 transition-all"
+                     overflow-hidden bg-orange-100 dark:bg-zinc-800 group-hover:ring-2 ring-orange-300/75 dark:ring-zinc-600 transition-all"
               >
                 <img
                   src={cat.image}
@@ -31,7 +31,7 @@ const HomeCategories = () => {
                         object-contain rounded-full transition-all"
                 />
               </div>
-              <span className="text-xs font-medium text-zinc-600 text-center leading-tight">
+              <span className="text-xs font-medium text-zinc-600 dark:text-zinc-300 text-center leading-tight">
                 {cat.name}
               </span>
             </Link>

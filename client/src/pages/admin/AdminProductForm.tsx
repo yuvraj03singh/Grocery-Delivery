@@ -93,15 +93,15 @@ export default function AdminProductForm() {
 
   return (
     <>
-      <div className="bg-white rounded-2xl shadow-sm border border-app-border overflow-hidden">
-        <div className="px-6 py-5 border-b border-app-border flex items-center gap-4">
+      <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-transparent dark:border-zinc-800 overflow-hidden">
+        <div className="px-6 py-5 border-b border-app-border dark:border-zinc-800 flex items-center gap-4">
           <Link
             to="/admin/products"
-            className="p-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-500 rounded-lg transition-colors"
+            className="p-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-500 rounded-lg transition-colors"
           >
             <ArrowLeftIcon className="size-5" />
           </Link>
-          <h2 className="text-xl font-semibold text-zinc-900">
+          <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
             {isEdit ? "Edit Product" : "New Product"}
           </h2>
         </div>
@@ -111,7 +111,7 @@ export default function AdminProductForm() {
           <form onSubmit={handleSubmit} className="p-6 space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                   Name
                 </label>
                 <input
@@ -121,11 +121,11 @@ export default function AdminProductForm() {
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-lg border border-zinc-200 focus:border-app-green focus:ring-1 focus:ring-app-green outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-transparent dark:bg-zinc-800 dark:text-zinc-100 focus:border-app-green focus:ring-1 focus:ring-app-green outline-none transition-all"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                   Category
                 </label>
                 <select
@@ -134,7 +134,7 @@ export default function AdminProductForm() {
                   onChange={(e) =>
                     setFormData({ ...formData, category: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-lg border border-zinc-200 focus:border-app-green focus:ring-1 focus:ring-app-green outline-none transition-all bg-white"
+                  className="w-full px-4 py-2.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 dark:text-zinc-100 focus:border-app-green focus:ring-1 focus:ring-app-green outline-none transition-all"
                 >
                   <option value="">Select a category</option>
                   {categoriesData.map((c) => (
@@ -145,7 +145,7 @@ export default function AdminProductForm() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                   Price (Rs)
                 </label>
                 <input
@@ -157,11 +157,11 @@ export default function AdminProductForm() {
                   onChange={(e) =>
                     setFormData({ ...formData, price: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-lg border border-zinc-200 focus:border-app-green focus:ring-1 focus:ring-app-green outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-transparent dark:bg-zinc-800 dark:text-zinc-100 focus:border-app-green focus:ring-1 focus:ring-app-green outline-none transition-all"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                   Original Price (Rs) - Optional
                 </label>
                 <input
@@ -172,11 +172,11 @@ export default function AdminProductForm() {
                   onChange={(e) =>
                     setFormData({ ...formData, originalPrice: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-lg border border-zinc-200 focus:border-app-green focus:ring-1 focus:ring-app-green outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-transparent dark:bg-zinc-800 dark:text-zinc-100 focus:border-app-green focus:ring-1 focus:ring-app-green outline-none transition-all"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                   Unit
                 </label>
                 <input
@@ -187,11 +187,11 @@ export default function AdminProductForm() {
                   onChange={(e) =>
                     setFormData({ ...formData, unit: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-lg border border-zinc-200 focus:border-app-green focus:ring-1 focus:ring-app-green outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-transparent dark:bg-zinc-800 dark:text-zinc-100 focus:border-app-green focus:ring-1 focus:ring-app-green outline-none transition-all"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                   Stock
                 </label>
                 <input
@@ -202,16 +202,16 @@ export default function AdminProductForm() {
                   onChange={(e) =>
                     setFormData({ ...formData, stock: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-lg border border-zinc-200 focus:border-app-green focus:ring-1 focus:ring-app-green outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-transparent dark:bg-zinc-800 dark:text-zinc-100 focus:border-app-green focus:ring-1 focus:ring-app-green outline-none transition-all"
                 />
               </div>
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                   Product Image
                 </label>
                 <div className="flex items-center gap-4">
                   {(imageFile || formData.image) && (
-                    <div className="size-16 rounded-lg border border-zinc-200 overflow-hidden shrink-0 bg-app-cream">
+                    <div className="size-16 rounded-lg border border-zinc-200 dark:border-zinc-700 overflow-hidden shrink-0 bg-app-cream dark:bg-zinc-800">
                       <img
                         src={
                           imageFile
@@ -227,12 +227,12 @@ export default function AdminProductForm() {
                     type="file"
                     accept="image/*"
                     onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-                    className="w-full px-4 py-2.5 rounded-lg border border-zinc-200 focus:border-app-green outline-none transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-app-orange file:text-white hover:file:bg-orange-600 cursor-pointer"
+                    className="w-full px-4 py-2.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-transparent dark:bg-zinc-800 dark:text-zinc-100 focus:border-app-green outline-none transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-app-orange file:text-white hover:file:bg-orange-600 cursor-pointer"
                   />
                 </div>
               </div>
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
+                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
                   Description
                 </label>
                 <textarea
@@ -242,13 +242,13 @@ export default function AdminProductForm() {
                   onChange={(e) =>
                     setFormData({ ...formData, description: e.target.value })
                   }
-                  className="w-full px-4 py-2.5 rounded-lg border border-zinc-200 focus:border-app-green focus:ring-1 focus:ring-app-green outline-none transition-all resize-none"
+                  className="w-full px-4 py-2.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-transparent dark:bg-zinc-800 dark:text-zinc-100 focus:border-app-green focus:ring-1 focus:ring-app-green outline-none transition-all resize-none"
                 />
               </div>
               <div className="flex items-center gap-3">
                 <label
                   htmlFor="isOrganic"
-                  className="text-sm font-medium text-zinc-700 cursor-pointer"
+                  className="text-sm font-medium text-zinc-700 dark:text-zinc-300 cursor-pointer"
                 >
                   Organic
                 </label>
@@ -259,12 +259,12 @@ export default function AdminProductForm() {
                   onChange={(e) =>
                     setFormData({ ...formData, isOrganic: e.target.checked })
                   }
-                  className="size-5 text-app-green rounded border-zinc-300 focus:ring-app-green cursor-pointer"
+                  className="size-5 text-app-green rounded border-zinc-300 dark:border-zinc-600 focus:ring-app-green cursor-pointer bg-transparent dark:bg-zinc-800"
                 />
               </div>
             </div>
 
-            <div className="pt-6 border-t border-app-border flex justify-end">
+            <div className="pt-6 border-t border-app-border dark:border-zinc-800 flex justify-end">
               <button
                 disabled={saving}
                 type="submit"

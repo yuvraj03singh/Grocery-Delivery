@@ -16,8 +16,8 @@ export default function CheckoutPayment({
   setPaymentMethod,
 }: CheckoutPaymentProps) {
   return (
-    <div className="bg-white rounded-2xl p-6 animate-fade-in">
-      <h2 className="text-lg font-semibold text-app-green mb-5 flex items-center gap-2">
+    <div className="bg-white dark:bg-zinc-900 border border-transparent dark:border-zinc-800 rounded-2xl p-6 animate-fade-in">
+      <h2 className="text-lg font-semibold text-app-green dark:text-zinc-100 mb-5 flex items-center gap-2">
         <CreditCardIcon className="size-5" /> Payment Method
       </h2>
       <div className="space-y-3">
@@ -35,7 +35,7 @@ export default function CheckoutPayment({
         ].map((method) => (
           <label
             key={method.value}
-            className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all ${paymentMethod === method.value ? "border-app-green bg-app-cream" : "border-app-border hover:border-app-green-lighter"}`}
+            className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all ${paymentMethod === method.value ? "border-app-green bg-app-cream dark:bg-zinc-800 dark:border-zinc-600" : "border-app-border dark:border-zinc-700 hover:border-app-green-lighter dark:hover:border-zinc-500"}`}
           >
             <input
               type="radio"
@@ -46,10 +46,10 @@ export default function CheckoutPayment({
               className="size-4 text-app-green"
             />
             <div>
-              <p className="text-sm font-semibold text-app-green">
+              <p className="text-sm font-semibold text-app-green dark:text-zinc-100">
                 {method.label}
               </p>
-              <p className="text-xs text-app-text-light">{method.desc}</p>
+              <p className="text-xs text-app-text-light dark:text-zinc-400">{method.desc}</p>
             </div>
           </label>
         ))}

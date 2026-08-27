@@ -7,6 +7,8 @@ import {
   LockIcon,
   MailIcon,
   Loader2Icon,
+  EyeIcon,
+  EyeOffIcon,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
@@ -18,10 +20,13 @@ export const Login = () => {
   const [email, setEmail] = useState(""); //help to set thr email
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false); //it help to tell the request is loading or not
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const { login, register } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
     setLoading(true);
     try {
       if (isLoginState) {
@@ -31,13 +36,14 @@ export const Login = () => {
       }
     } catch (error: any) {
       console.error("Login error:", error);
+      setError(error.response?.data?.message || error.message || "An error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex bg-app-cream dark:bg-zinc-950">
       {/* Left side with image */}
 
       <div className="hidden lg:flex lg:w-1/2 bg-app-green relative items-center justify-center">
@@ -49,7 +55,7 @@ export const Login = () => {
 
         <div className="relative px-12 text-center">
           <h2 className="text-4xl font-semibold text-white mb-4">
-            Welcome back to Grocery
+            Welcome back to Apna Bazar
           </h2>
           <p className="text-white/60 font-serif text-xl max-w-sm mx-auto">
             Fresh groceries delivered to your doorstep.
@@ -59,30 +65,33 @@ export const Login = () => {
 
       {/* Right side with form */}
 
-      <div className="flex-1 flex-center px-4 py-12 bg-app-cream">
+      <div className="flex-1 flex-center px-4 py-12 bg-app-cream dark:bg-zinc-950">
         <div className="max-w-md w-full">
           {/*form header message*/}
           <div className="text-center mb-8">
             <Link to="/" className="inline-flex items-center gap-5 mb-4">
-              <BikeIcon className="size-8 text-app-green" />
-              <span className="text-2xl font-semibold text-app-green mb-2">
-                Grocery
+              <BikeIcon className="size-8 text-app-green dark:text-zinc-300" />
+              <span className="text-2xl font-semibold text-app-green dark:text-zinc-100 mb-2">
+                Apna Bazar
               </span>
             </Link>
 
-            <h1 className="text-2xl font-semibold text-app-green mb-2">
+            <h1 className="text-2xl font-semibold text-app-green dark:text-zinc-100 mb-2">
               {/* ternary operator to check if the user is in login state or registration state condition?valueTrue:valueFalse */}
               {isLoginState
                 ? "Sign in to your account"
                 : "Sign up for a new account"}
             </h1>
 
-            <p>
+            <p className="dark:text-zinc-300">
               {isLoginState
                 ? "Don't have an account? "
                 : "Already have an account? "}
               <button
-                onClick={() => setIsLoginState(!isLoginState)}
+                onClick={() => {
+                  setIsLoginState(!isLoginState);
+                  setError("");
+                }}
                 className="text-orange-500 ml-1 font-semibold hover:text-orange-600 transition-colors"
               >
                 {isLoginState ? "Create one" : "Sign in"}
@@ -92,8 +101,13 @@ export const Login = () => {
 
           {/*login/registration form*/}
           <form onSubmit={handleSubmit} className="space-y-5">
+            {error && (
+              <div className="p-3 bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400 rounded-xl text-sm font-medium border border-red-100 dark:border-red-900/50 animate-fade-in">
+                {error}
+              </div>
+            )}
             {!isLoginState && (
-              <label className="text-lg flex-col gap-1">
+              <label className="text-lg flex-col gap-1 dark:text-zinc-300">
                 Name
                 <div className="relative">
                   <UserIcon className="absolute left-2 top-1/2 -translate-y-1/2 text-app-text-light" />
@@ -103,14 +117,14 @@ export const Login = () => {
                     onChange={(e) => setName(e.target.value)}
                     required
                     placeholder="Enter your name"
-                    className="w-full pl-15 pr-3 py-3 text-sm bg-white
-                     rounded-xl border not-focus:border-app-border transition-all"
+                    className="w-full pl-15 pr-3 py-3 text-sm bg-white dark:bg-zinc-900 dark:text-zinc-100
+                     rounded-xl border not-focus:border-app-border dark:border-zinc-700 transition-all"
                   />
                 </div>
               </label>
             )}
             <div className="space-y-5 mt-5">
-              <label className="text-lg flex-col gap-1">
+              <label className="text-lg flex-col gap-1 dark:text-zinc-300">
                 Email address
                 <div className="relative">
                   <MailIcon className="absolute left-2 top-1/2 -translate-y-1/2 text-app-text-light" />
@@ -120,27 +134,34 @@ export const Login = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     placeholder="Enter your email"
-                    className="w-full pl-15 pr-3 py-3 text-sm bg-white
-                     rounded-xl border not-focus:border-app-border transition-all"
+                    className="w-full pl-15 pr-3 py-3 text-sm bg-white dark:bg-zinc-900 dark:text-zinc-100
+                     rounded-xl border not-focus:border-app-border dark:border-zinc-700 transition-all"
                   />
                 </div>
               </label>
             </div>
 
             <div className="space-y-5 mt-5">
-              <label className="text-lg flex-col gap-1">
+              <label className="text-lg flex-col gap-1 dark:text-zinc-300">
                 Password
                 <div className="relative">
                   <LockIcon className="absolute left-2 top-1/2 -translate-y-1/2 text-app-text-light" />
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     placeholder="Enter your password"
-                    className="w-full pl-15 pr-3 py-3 text-sm bg-white
-                     rounded-xl border not-focus:border-app-border transition-all"
+                    className="w-full pl-15 pr-12 py-3 text-sm bg-white dark:bg-zinc-900 dark:text-zinc-100
+                     rounded-xl border not-focus:border-app-border dark:border-zinc-700 transition-all"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-app-text-light hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
+                  >
+                    {showPassword ? <EyeOffIcon className="size-5" /> : <EyeIcon className="size-5" />}
+                  </button>
                 </div>
               </label>
             </div>
@@ -148,7 +169,7 @@ export const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="flex-center w-full py-3 px-4 bg-green-950 text-white font-semibold rounded-xl hover:bg-green-900
+              className="flex-center w-full py-3 px-4 bg-app-green text-white font-semibold rounded-xl hover:bg-app-green-light
                transition-colors disabled:opacity-50"
             >
               {loading ? (

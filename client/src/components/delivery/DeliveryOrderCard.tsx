@@ -30,21 +30,21 @@ export default function DeliveryOrderCard({
   const [showDetails, setShowDetails] = useState(false);
 
   return (
-    <article className="bg-white rounded-2xl border border-app-border p-5 shadow-sm">
+    <article className="bg-white dark:bg-zinc-900 rounded-2xl border border-transparent dark:border-zinc-800 p-5 shadow-sm">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div className="space-y-3 min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-lg font-semibold text-zinc-900">
+            <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
               Order {order.id.slice(-6)}
             </h3>
             <span
-              className={`px-2.5 py-1 rounded-full text-xs font-semibold ${statusColors[order.status] || "bg-zinc-100 text-zinc-600"}`}
+              className={`px-2.5 py-1 rounded-full text-xs font-semibold ${statusColors[order.status] || "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"}`}
             >
               {order.status}
             </span>
           </div>
 
-          <div className="flex flex-col gap-2 text-sm text-zinc-600">
+          <div className="flex flex-col gap-2 text-sm text-zinc-600 dark:text-zinc-300">
             <div className="flex items-center gap-2">
               <MapPinIcon className="size-4 text-app-green" />
               <span className="truncate">
@@ -96,7 +96,7 @@ export default function DeliveryOrderCard({
               
               <button
                 onClick={() => setCancelModal(order.id)}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-app-border text-zinc-700 text-sm font-medium hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-zinc-800 border border-app-border dark:border-transparent text-zinc-700 dark:text-zinc-300 text-sm font-medium hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-600 dark:hover:text-red-400 hover:border-red-200 transition-colors"
               >
                 Cancel
               </button>
@@ -104,7 +104,7 @@ export default function DeliveryOrderCard({
           ) : (
             <button
               onClick={() => setShowDetails(!showDetails)}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-app-border text-zinc-700 text-sm font-medium hover:bg-app-cream transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-zinc-800 border border-app-border dark:border-transparent text-zinc-700 dark:text-zinc-300 text-sm font-medium hover:bg-app-cream dark:hover:bg-zinc-700 transition-colors"
             >
               {showDetails ? "Hide" : "View"}
               {showDetails ? <ChevronUpIcon className="size-4" /> : <ChevronDownIcon className="size-4" />}
@@ -114,17 +114,17 @@ export default function DeliveryOrderCard({
       </div>
 
       {showDetails && (
-        <div className="mt-4 pt-4 border-t border-app-border">
-          <h4 className="text-sm font-semibold text-zinc-900 mb-3">Order Items</h4>
+        <div className="mt-4 pt-4 border-t border-app-border dark:border-zinc-800">
+          <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mb-3">Order Items</h4>
           <div className="space-y-3">
             {order.items.map((item, index) => (
               <div key={index} className="flex items-center gap-3">
-                <img src={item.image} alt={item.name} className="w-12 h-12 rounded-lg object-cover bg-zinc-50 border border-zinc-100" />
+                <img src={item.image} alt={item.name} className="w-12 h-12 rounded-lg object-cover bg-zinc-50 dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-zinc-900 truncate">{item.name}</p>
-                  <p className="text-xs text-zinc-500">Qty: {item.quantity}</p>
+                  <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate">{item.name}</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">Qty: {item.quantity}</p>
                 </div>
-                <div className="text-sm font-semibold text-zinc-900">
+                <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                   Rs {(item.price * item.quantity).toFixed(2)}
                 </div>
               </div>

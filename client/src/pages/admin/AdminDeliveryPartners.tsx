@@ -74,7 +74,7 @@ export default function AdminDeliveryPartners() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-zinc-900">
+        <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
           Delivery Partners
         </h1>
         <button
@@ -87,12 +87,12 @@ export default function AdminDeliveryPartners() {
 
       {/* Partners Grid */}
       {partners.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-2xl border border-app-border">
+        <div className="text-center py-16 bg-white dark:bg-zinc-900 rounded-2xl border border-transparent dark:border-zinc-800">
           <TruckIcon className="size-12 text-app-border mx-auto mb-3" />
-          <p className="text-lg font-semibold text-zinc-900 mb-1">
+          <p className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
             No delivery partners
           </p>
-          <p className="text-sm text-zinc-500">
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">
             Onboard your first partner to get started
           </p>
         </div>
@@ -101,7 +101,7 @@ export default function AdminDeliveryPartners() {
           {partners.map((p) => (
             <div
               key={p.id}
-              className="bg-white rounded-2xl border border-app-border p-5 space-y-3"
+              className="bg-white dark:bg-zinc-900 rounded-2xl border border-transparent dark:border-zinc-800 p-5 space-y-3"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -111,7 +111,7 @@ export default function AdminDeliveryPartners() {
                     </span>
                   </div>
                   <div>
-                    <p className="font-semibold text-zinc-900 text-sm">
+                    <p className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">
                       {p.name}
                     </p>
                     <p className="text-xs text-zinc-500 capitalize">
@@ -120,12 +120,12 @@ export default function AdminDeliveryPartners() {
                   </div>
                 </div>
                 <span
-                  className={`px-2.5 py-1 text-[10px] font-semibold rounded-full ${p.isActive ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}
+                  className={`px-2.5 py-1 text-[10px] font-semibold rounded-full ${p.isActive ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400" : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"}`}
                 >
                   {p.isActive ? "Active" : "Inactive"}
                 </span>
               </div>
-              <div className="space-y-1.5 text-sm text-zinc-600">
+              <div className="space-y-1.5 text-sm text-zinc-600 dark:text-zinc-400">
                 <p className="flex items-center gap-2">
                   <MailIcon className="w-3.5 h-3.5 text-zinc-400" /> {p.email}
                 </p>
@@ -135,7 +135,7 @@ export default function AdminDeliveryPartners() {
               </div>
               <button
                 onClick={() => toggleActive(p.id, p.isActive)}
-                className={`w-full py-2 text-xs font-medium rounded-lg transition-colors ${p.isActive ? "bg-red-50 text-red-600 hover:bg-red-100" : "bg-green-50 text-green-600 hover:bg-green-100"}`}
+                className={`w-full py-2 text-xs font-medium rounded-lg transition-colors ${p.isActive ? "bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50" : "bg-green-50 text-green-600 hover:bg-green-100 dark:bg-green-900/30 dark:text-green-400 dark:hover:bg-green-900/50"}`}
               >
                 {p.isActive ? "Deactivate" : "Activate"}
               </button>
@@ -148,29 +148,29 @@ export default function AdminDeliveryPartners() {
       {showForm && (
         <>
           <div
-            className="fixed inset-0 bg-app-cream/80 backdrop-blur z-50"
+            className="fixed inset-0 bg-app-cream/80 dark:bg-zinc-950/80 backdrop-blur z-50"
             onClick={() => setShowForm(false)}
           />
           <div className="fixed inset-0 z-50 flex-center p-4">
             <form
               onSubmit={handleSubmit}
-              className="bg-white rounded-2xl p-6 w-full max-w-lg animate-fade-in"
+              className="bg-white dark:bg-zinc-900 border border-transparent dark:border-zinc-800 rounded-2xl p-6 w-full max-w-lg animate-fade-in"
             >
               <div className="flex items-center justify-between mb-5">
-                <h2 className="text-lg font-semibold text-app-green">
+                <h2 className="text-lg font-semibold text-app-green dark:text-zinc-100">
                   Onboard Delivery Partner
                 </h2>
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
-                  className="p-2 hover:bg-app-cream rounded-lg"
+                  className="p-2 hover:bg-app-cream dark:hover:bg-zinc-800 dark:text-zinc-400 rounded-lg"
                 >
                   <XIcon className="size-5" />
                 </button>
               </div>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-app-green mb-1.5">
+                  <label className="block text-sm font-medium text-app-green dark:text-zinc-300 mb-1.5">
                     Full Name
                   </label>
                   <input
@@ -178,12 +178,12 @@ export default function AdminDeliveryPartners() {
                     required
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border focus:border-app-green outline-none"
+                    className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border dark:border-zinc-700 bg-transparent dark:bg-zinc-800 dark:text-zinc-100 focus:border-app-green outline-none"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-sm font-medium text-app-green mb-1.5">
+                    <label className="block text-sm font-medium text-app-green dark:text-zinc-300 mb-1.5">
                       Email
                     </label>
                     <input
@@ -193,11 +193,11 @@ export default function AdminDeliveryPartners() {
                       onChange={(e) =>
                         setForm({ ...form, email: e.target.value })
                       }
-                      className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border focus:border-app-green outline-none"
+                      className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border dark:border-zinc-700 bg-transparent dark:bg-zinc-800 dark:text-zinc-100 focus:border-app-green outline-none"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-app-green mb-1.5">
+                    <label className="block text-sm font-medium text-app-green dark:text-zinc-300 mb-1.5">
                       Password
                     </label>
                     <input
@@ -208,13 +208,13 @@ export default function AdminDeliveryPartners() {
                       onChange={(e) =>
                         setForm({ ...form, password: e.target.value })
                       }
-                      className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border focus:border-app-green outline-none"
+                      className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border dark:border-zinc-700 bg-transparent dark:bg-zinc-800 dark:text-zinc-100 focus:border-app-green outline-none"
                     />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-sm font-medium text-app-green mb-1.5">
+                    <label className="block text-sm font-medium text-app-green dark:text-zinc-300 mb-1.5">
                       Phone
                     </label>
                     <input
@@ -224,11 +224,11 @@ export default function AdminDeliveryPartners() {
                       onChange={(e) =>
                         setForm({ ...form, phone: e.target.value })
                       }
-                      className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border focus:border-app-green outline-none"
+                      className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border dark:border-zinc-700 bg-transparent dark:bg-zinc-800 dark:text-zinc-100 focus:border-app-green outline-none"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-app-green mb-1.5">
+                    <label className="block text-sm font-medium text-app-green dark:text-zinc-300 mb-1.5">
                       Vehicle Type
                     </label>
                     <select
@@ -236,7 +236,7 @@ export default function AdminDeliveryPartners() {
                       onChange={(e) =>
                         setForm({ ...form, vehicleType: e.target.value })
                       }
-                      className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border focus:border-app-green outline-none bg-white"
+                      className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border dark:border-zinc-700 bg-white dark:bg-zinc-800 dark:text-zinc-100 focus:border-app-green outline-none"
                     >
                       <option value="bike">Bike</option>
                       <option value="scooter">Scooter</option>

@@ -18,14 +18,14 @@ export default function CancelModal({
 }: CancelModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+      <div className="w-full max-w-md rounded-2xl bg-white dark:bg-zinc-900 border border-transparent dark:border-zinc-800 p-6 shadow-xl">
         <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-zinc-900">
+          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
             Cancel Delivery
           </h2>
           <button
             onClick={() => setCancelModal(null)}
-            className="rounded-lg p-2 text-zinc-500 hover:bg-zinc-100"
+            className="rounded-lg p-2 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
           >
             <XIcon className="size-4" />
           </button>
@@ -36,13 +36,13 @@ export default function CancelModal({
           onChange={(e) => setCancelReason(e.target.value)}
           placeholder="Reason for cancellation"
           rows={4}
-          className="w-full rounded-xl border border-app-border px-4 py-3 text-sm outline-none focus:border-app-green"
+          className="w-full rounded-xl border border-app-border dark:border-zinc-700 bg-transparent dark:bg-zinc-800 dark:text-zinc-100 px-4 py-3 text-sm outline-none focus:border-app-green"
         />
 
         <div className="mt-6 flex gap-3">
           <button
             onClick={() => setCancelModal(null)}
-            className="flex-1 rounded-xl border border-app-border px-4 py-3 text-sm font-medium text-zinc-700 hover:bg-app-cream"
+            className="flex-1 rounded-xl border border-app-border dark:border-zinc-700 px-4 py-3 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-app-cream dark:hover:bg-zinc-800"
           >
             Back
           </button>

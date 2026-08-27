@@ -56,9 +56,9 @@ const MyOrders = () => {
         );
 
   return (
-    <div className="min-h-screen bg-app-cream mb-20">
+    <div className="min-h-screen bg-app-cream dark:bg-zinc-950 mb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-2xl font-semibold text-app-green mb-6">
+        <h1 className="text-2xl font-semibold text-app-green dark:text-zinc-100 mb-6">
           My Orders
         </h1>
 
@@ -71,7 +71,7 @@ const MyOrders = () => {
               className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors duration-200 ${
                 activeTab.toLowerCase() === tab.toLowerCase()
                   ? "bg-app-green text-white"
-                  : "bg-white text-app-text-light hover:bg-app-cream-dark border border-app-border"
+                  : "bg-white dark:bg-zinc-900 text-app-text-light dark:text-zinc-300 hover:bg-app-cream-dark dark:hover:bg-zinc-800 border border-app-border dark:border-zinc-700"
               }`}
             >
               {tab.toLowerCase() === "all" ? "All orders" : tab}
@@ -104,19 +104,19 @@ const MyOrders = () => {
               <Link
                 key={order.id}
                 to={`/orders/${order.id}`}
-                className="block max-w-4xl bg-white rounded-2xl p-5 hover:shadow-md transition-all border border-app-border/50"
+                className="block max-w-4xl bg-white dark:bg-zinc-900 rounded-2xl p-5 hover:shadow-md transition-all border border-app-border/50 dark:border-zinc-800"
               >
                 {/* Order details */}
                 <div className="flex items-start justify-between mb-3">
                   {/*left*/}
                   <div>
-                    <p className="text-sm font-medium text-app-green">
+                    <p className="text-sm font-medium text-app-green dark:text-zinc-100">
                       Order #{order.id.slice(-8).toUpperCase()}
                     </p>
 
                     <div className="flex items-center gap-2 mt-1">
-                      <CalendarIcon className="size-3 text-app-text-light" />
-                      <span className="text-xs text-app-text-light">
+                      <CalendarIcon className="size-3 text-app-text-light dark:text-zinc-500" />
+                      <span className="text-xs text-app-text-light dark:text-zinc-400">
                         {new Date(order.createdAt).toLocaleDateString("en-US", {
                           month: "short",
                           day: "numeric",
@@ -136,7 +136,7 @@ const MyOrders = () => {
                     >
                       {order.status}
                     </span>
-                    <ChevronRightIcon className="size-3 text-app-text-light" />
+                    <ChevronRightIcon className="size-3 text-app-text-light dark:text-zinc-500" />
                   </div>
                 </div>
 
@@ -147,11 +147,11 @@ const MyOrders = () => {
                       key={i}
                       src={item.image}
                       alt={item.name}
-                      className="size-12 sm:size-16 rounded-lg object-cover border border-app-border"
+                      className="size-12 sm:size-16 rounded-lg object-cover border border-app-border dark:border-zinc-700"
                     />
                   ))}
                   {order.items.length > 4 && (
-                    <div className="size-12 sm:size-16 rounded-lg bg-app-cream flex-center text-xs font-semibold text-app-text-light">
+                    <div className="size-12 sm:size-16 rounded-lg bg-app-cream dark:bg-zinc-800 flex-center text-xs font-semibold text-app-text-light dark:text-zinc-400">
                       +{order.items.length - 4} more
                     </div>
                   )}
@@ -159,10 +159,10 @@ const MyOrders = () => {
 
                 {/*total*/}
                 <div className="flex justify-between items-center pt-3 text-sm">
-                  <span className="text-app-text-light">
+                  <span className="text-app-text-light dark:text-zinc-400">
                     {order.items.length} items
                   </span>
-                  <span className="font-semibold text-app-green">
+                  <span className="font-semibold text-app-green dark:text-zinc-100">
                     Rs {order.total.toFixed(2)}
                   </span>
                 </div>

@@ -19,20 +19,20 @@ export default function CheckoutReview({
   const currency = import.meta.env.VITE_CURRENCY_SYMBOL || "$";
 
   return (
-    <div className="bg-white rounded-2xl p-6 animate-fade-in">
-      <h2 className="text-lg font-semibold text-app-green mb-5 flex items-center gap-2">
+    <div className="bg-white dark:bg-zinc-900 border border-transparent dark:border-zinc-800 rounded-2xl p-6 animate-fade-in">
+      <h2 className="text-lg font-semibold text-app-green dark:text-zinc-100 mb-5 flex items-center gap-2">
         <CheckIcon className="size-5" /> Review Your Order
       </h2>
 
       {/* Delivery Info */}
-      <div className="mb-5 p-4 bg-app-cream rounded-xl">
+      <div className="mb-5 p-4 bg-app-cream dark:bg-zinc-800 rounded-xl">
         <div className="flex items-center gap-2 mb-2">
-          <TruckIcon className="size-4 text-app-green" />
-          <span className="text-sm font-semibold text-app-green">
+          <TruckIcon className="size-4 text-app-green dark:text-zinc-300" />
+          <span className="text-sm font-semibold text-app-green dark:text-zinc-100">
             Delivery Address
           </span>
         </div>
-        <p className="text-sm text-app-text-light">
+        <p className="text-sm text-app-text-light dark:text-zinc-300">
           {address.label} — {address.address}, {address.city}, {address.state}{" "}
           {address.zip}
         </p>
@@ -48,14 +48,14 @@ export default function CheckoutReview({
               className="size-12 rounded-lg object-cover"
             />
             <div className="flex-1">
-              <p className="text-sm font-medium text-app-green">
+              <p className="text-sm font-medium text-app-green dark:text-zinc-100">
                 {item.product.name}
               </p>
-              <p className="text-xs text-app-text-light">
+              <p className="text-xs text-app-text-light dark:text-zinc-400">
                 Qty: {item.quantity}
               </p>
             </div>
-            <span className="text-sm font-semibold">
+            <span className="text-sm font-semibold dark:text-zinc-100">
               {currency}
               {(item.product.price * item.quantity).toFixed(2)}
             </span>

@@ -42,7 +42,7 @@ export default function DeliveryLogin() {
     }, [navigate]);
 
     return (
-        <div className="min-h-screen flex">
+        <div className="min-h-screen flex bg-app-cream dark:bg-zinc-950">
             {/* Left Side */}
             <div className="hidden lg:flex lg:w-1/2 bg-app-green relative items-center justify-center">
                 <img src={heroSectionData.hero_image} alt="" className="absolute inset-0 object-cover h-full bg-center opacity-10" />
@@ -53,25 +53,25 @@ export default function DeliveryLogin() {
             </div>
 
             {/* Right Side Form */}
-            <div className="flex-1 flex-center px-4 py-12 bg-app-cream">
+            <div className="flex-1 flex-center px-4 py-12 bg-app-cream dark:bg-zinc-950">
                 <div className="w-full max-w-md">
                     <div className="text-center mb-8">
                         <div className="flex-center gap-2 mb-4">
                             <BikeIcon className="size-7 text-app-green" />
-                            <span className="text-2xl font-semibold text-app-green">Instacart</span>
+                            <span className="text-2xl font-semibold text-app-green">Blinkit</span>
                         </div>
-                        <h1 className="text-2xl font-semibold text-app-green mb-2">Delivery Partner Login</h1>
-                        <p className="text-sm text-app-text-light">Sign in to manage your deliveries</p>
+                        <h1 className="text-2xl font-semibold text-app-green dark:text-zinc-100 mb-2">Delivery Partner Login</h1>
+                        <p className="text-sm text-app-text-light dark:text-zinc-400">Sign in to manage your deliveries</p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-8 space-y-5">
+                    <form onSubmit={handleSubmit} className="bg-white dark:bg-zinc-900 border border-transparent dark:border-zinc-800 rounded-2xl p-8 space-y-5">
                         <div>
-                            <label className="block text-sm font-medium text-app-green mb-1.5">Email</label>
-                            <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border not-focus:border-app-border text-sm transition-colors" placeholder="partner@example.com" />
+                            <label className="block text-sm font-medium text-app-green dark:text-zinc-300 mb-1.5">Email</label>
+                            <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border not-focus:border-app-border dark:not-focus:border-zinc-700 bg-transparent dark:bg-zinc-800 dark:text-zinc-100 text-sm transition-colors" placeholder="partner@example.com" />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-app-green mb-1.5">Password</label>
-                            <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border not-focus:border-app-border text-sm transition-colors" placeholder="••••••••" />
+                            <label className="block text-sm font-medium text-app-green dark:text-zinc-300 mb-1.5">Password</label>
+                            <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border not-focus:border-app-border dark:not-focus:border-zinc-700 bg-transparent dark:bg-zinc-800 dark:text-zinc-100 text-sm transition-colors" placeholder="••••••••" />
                         </div>
                         <button type="submit" disabled={loading} className="w-full py-3 bg-app-green text-white font-semibold rounded-xl hover:bg-app-green-light transition-colors disabled:opacity-60">
                             {loading ? "Signing in..." : "Sign In"}

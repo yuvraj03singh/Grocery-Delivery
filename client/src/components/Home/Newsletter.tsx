@@ -2,16 +2,16 @@ import { MailIcon } from "lucide-react";
 
 const Newsletter = () => {
   return (
-    <section className="bg-white py-18 px-4 sm:px-6 lg:px-8 rounded-3xl mx-auto shadow-xs mt-32 mb-20">
+    <section className="bg-white dark:bg-zinc-900 py-18 px-4 sm:px-6 lg:px-8 rounded-3xl mx-auto shadow-xs mt-32 mb-20">
       <div className="max-w-2xl mx-auto text-center">
-        <div className="size-16 bg-white rounded-xl flex-center mx-auto mb-6 shadow">
-          <MailIcon className="size-8 text-app-green" strokeWidth={1.5} />
+        <div className="size-16 bg-white dark:bg-zinc-800 rounded-xl flex-center mx-auto mb-6 shadow">
+          <MailIcon className="size-8 text-app-green dark:text-zinc-100" strokeWidth={1.5} />
         </div>
 
-        <h2 className="text-3xl font-semibold text-app-green mb-4">
+        <h2 className="text-3xl font-semibold text-app-green dark:text-zinc-100 mb-4">
           Subscribe to our newsletter
         </h2>
-        <p className="text-app-text-light mb-8 text-base">
+        <p className="text-app-text-light dark:text-zinc-400 mb-8 text-base">
           Get Weekly Updates and Exclusive Offers on your email and exclusive
           deals.
         </p>
@@ -23,8 +23,8 @@ const Newsletter = () => {
             type="email"
             placeholder="Enter your email"
             required
-            className="flex-1 px-5 py-3.5 rounded-xl border border-app-border
-                focus:border-app-green focus:ring bg-white text-sm transition-all"
+            className="flex-1 px-5 py-3.5 rounded-xl border border-app-border dark:border-zinc-700
+                focus:border-app-green dark:focus:border-zinc-500 focus:ring bg-white dark:bg-zinc-800 text-sm dark:text-zinc-100 transition-all"
           />
           <button
             type="submit"

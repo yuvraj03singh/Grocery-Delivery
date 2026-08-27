@@ -38,7 +38,7 @@ export default function LiveMap({ order, liveLocation }: { order: any; liveLocat
     const hasCoords = Boolean(lat && lng);
 
     return (
-        <div className="rounded-2xl overflow-hidden shadow-xs border border-app-border bg-white h-[340px] w-full relative">
+        <div className="rounded-2xl overflow-hidden shadow-xs border border-app-border dark:border-zinc-800 bg-white dark:bg-zinc-900 h-[340px] w-full relative z-0">
             {hasCoords ? (
                 <MapContainer center={[lat, lng]} zoom={14} style={{ height: "100%", width: "100%" }} zoomControl={false}>
                     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />

@@ -16,6 +16,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -42,7 +43,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white sticky top-0 z-50 border-b border-app-border print:hidden">
+    <nav className="bg-white dark:bg-zinc-900 sticky top-0 z-50 border-b border-app-border dark:border-zinc-800 print:hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6 h-16 flex items-center gap-8">
         {/* Logo */}
         <Link
@@ -57,11 +58,11 @@ const Navbar = () => {
         <div className="w-full flex items-center justify-end gap-4 lg:gap-8">
           {/* Menu */}
           <div className="hidden md:flex items-center gap-6 text-sm text-zinc-600">
-            <Link to="/" className="hover:text-app-orange transition">
+            <Link to="/" className="hover:text-app-orange transition text-zinc-900 dark:text-zinc-100">
               Home
             </Link>
 
-            <Link to="/products" className="hover:text-app-orange transition">
+            <Link to="/products" className="hover:text-app-orange transition text-zinc-900 dark:text-zinc-100">
               Products
             </Link>
 
@@ -89,7 +90,7 @@ const Navbar = () => {
                 placeholder="Search for products..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-10 pl-10 pr-4 rounded-full bg-orange-50 border border-orange-200 focus:outline-none focus:ring-2 focus:ring-app-orange/30"
+                className="w-full h-10 pl-10 pr-4 rounded-full bg-orange-50 dark:bg-zinc-800 border border-orange-200 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-app-orange/30 dark:text-white"
               />
             </div>
           </form>
@@ -97,13 +98,14 @@ const Navbar = () => {
           {/*right side */}
 
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             {/* Cart */}
 
             <button
               className="relative p-2 rounded-full"
               onClick={() => setIsCartOpen(true)}
             >
-              <ShoppingCartIcon className="size-5 text-zinc-900" />
+              <ShoppingCartIcon className="size-5 text-zinc-900 dark:text-zinc-300" />
               {cartCount > 0 && (
                 <span
                   className="absolute -top-1 -right-1 size-4
@@ -127,7 +129,7 @@ const Navbar = () => {
                   >
                     {user.name.charAt(0).toUpperCase()}
                   </div>
-                  <ChevronDownIcon className="size-5 text-zinc-900" />
+                  <ChevronDownIcon className="size-5 text-zinc-900 dark:text-zinc-100" />
                 </button>
               ) : (
                 <div className="flex-center gap-2">
@@ -160,12 +162,12 @@ const Navbar = () => {
                     onClick={() => setUserMenuOpen(false)}
                   />
                   <div
-                    className="absolute right-0 top-full mt-2.5 w-56 bg-white rounded-xl shadow-lg border 
-                  border-app-border py-2 z-50 animate-fade-in"
+                    className="absolute right-0 top-full mt-2.5 w-56 bg-white dark:bg-zinc-900 rounded-xl shadow-lg border 
+                  border-app-border dark:border-zinc-800 py-2 z-50 animate-fade-in"
                   >
                     {user && (
                       <div className="px-4 py-2 border-app-border border-b">
-                        <p className="font-medium text-zinc-900">
+                        <p className="font-medium text-zinc-900 dark:text-zinc-100">
                           {user?.name}
                         </p>
                         <p className="text-xs text-zinc-500">{user?.email}</p>
@@ -218,7 +220,7 @@ const Navbar = () => {
                         <div>
                           <button
                             onClick={handleLogout}
-                            className="flex items-center gap-3 px-4 py-2.5 text-sm text-app-error hover:bg-red-50 w-full transition-colors"
+                            className="flex items-center gap-3 px-4 py-2.5 text-sm text-app-error hover:bg-red-50 dark:hover:bg-red-900/20 w-full transition-colors"
                           >
                             <LogOutIcon size={16} /> Logout
                           </button>

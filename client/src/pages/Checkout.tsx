@@ -124,18 +124,18 @@ const Checkout = () => {
   }, [user?.addresses]);
 
   return (
-    <div className="min-h-screen bg-app-cream py-8">
+    <div className="min-h-screen bg-app-cream dark:bg-zinc-950 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-sm text-app-text-light hover:text-app-green mb-6 transition-colors"
+          className="flex items-center gap-2 text-sm text-app-text-light dark:text-zinc-400 hover:text-app-green dark:hover:text-zinc-200 mb-6 transition-colors"
         >
           <ArrowLeft className="size-5" />
           Back
         </button>
 
-        <h1 className="text-2xl font-semibold text-app-green mb-8">Checkout</h1>
+        <h1 className="text-2xl font-semibold text-app-green dark:text-zinc-100 mb-8">Checkout</h1>
 
         {/* Checkout Steps */}
         <div className="flex items-center gap-2 mb-8">
@@ -199,24 +199,24 @@ const Checkout = () => {
           </div>
 
           {/* Order Summary */}
-          <aside className="bg-white rounded-2xl p-5 h-fit sticky top-24">
-            <h3 className="text-sm font-semibold text-app-green mb-4">
+          <aside className="bg-white dark:bg-zinc-900 border border-transparent dark:border-zinc-800 rounded-2xl p-5 h-fit sticky top-24">
+            <h3 className="text-sm font-semibold text-app-green dark:text-zinc-100 mb-4">
               Order Summary
             </h3>
 
             <div className="space-y-2 text-sm">
               <div className="flex justify-between gap-4">
-                <span className="text-app-text-light">
+                <span className="text-app-text-light dark:text-zinc-400">
                   Subtotal ({items.length} items)
                 </span>
-                <span>Rs {cartTotal.toFixed(2)}</span>
+                <span className="dark:text-zinc-100">Rs {cartTotal.toFixed(2)}</span>
               </div>
 
               <div className="flex justify-between gap-4">
-                <span className="text-app-text-light">Delivery</span>
-                <span>
+                <span className="text-app-text-light dark:text-zinc-400">Delivery</span>
+                <span className="dark:text-zinc-100">
                   {deliveryFee === 0 ? (
-                    <span className="text-app-screen">Free</span>
+                    <span className="text-app-screen text-app-green dark:text-app-green">Free</span>
                   ) : (
                     <span>Rs {deliveryFee.toFixed(2)}</span>
                   )}
@@ -224,13 +224,13 @@ const Checkout = () => {
               </div>
 
               <div className="flex justify-between gap-4">
-                <span className="text-app-text-light">Tax</span>
-                <span>Rs {tax.toFixed(2)}</span>
+                <span className="text-app-text-light dark:text-zinc-400">Tax</span>
+                <span className="dark:text-zinc-100">Rs {tax.toFixed(2)}</span>
               </div>
 
-              <div className="flex justify-between pt-3 border-t border-app-border text-base font-semibold">
-                <span>Total</span>
-                <span className="text-app-green">Rs {total.toFixed(2)}</span>
+              <div className="flex justify-between pt-3 border-t border-app-border dark:border-zinc-800 text-base font-semibold">
+                <span className="dark:text-zinc-100">Total</span>
+                <span className="text-app-green dark:text-zinc-100">Rs {total.toFixed(2)}</span>
               </div>
             </div>
           </aside>

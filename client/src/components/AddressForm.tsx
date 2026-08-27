@@ -18,18 +18,18 @@ const AddressForm = ({
         <form
           onClick={(e) => e.stopPropagation()}
           onSubmit={handleSubmit}
-          className="bg-white rounded-2xl p-6 w-full max-w-md animate-fade-in"
+          className="bg-white dark:bg-zinc-900 border border-transparent dark:border-zinc-800 rounded-2xl p-6 w-full max-w-md animate-fade-in"
         >
           {/* form fields would go here */}
 
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-lg font-semibold text-app-green">
-              {editingId ? "Edit Address" : "Add New Address"} Address
+            <h2 className="text-lg font-semibold text-app-green dark:text-zinc-100">
+              {editingId ? "Edit Address" : "Add New Address"}
             </h2>
             <button
               type="button"
               onClick={resetForm}
-              className="p-2 hover:bg-app-cream rounded-lg"
+              className="p-2 hover:bg-app-cream dark:hover:bg-zinc-800 rounded-lg text-gray-500 dark:text-zinc-400"
             >
               <XIcon className="size-5" />
             </button>
@@ -38,27 +38,27 @@ const AddressForm = ({
           {/* form fields would go here */}
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-app-green mb-1.5">
+              <label className="block text-sm font-medium text-app-green dark:text-zinc-300 mb-1.5">
                 Label
               </label>
               <input
                 type="text"
                 placeholder="Home ,Work ,etc."
                 required
-                className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border focus:border-app-green outline-none"
+                className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border dark:border-zinc-700 bg-transparent dark:bg-zinc-800 dark:text-zinc-100 focus:border-app-green outline-none"
                 value={form.label}
                 onChange={(e) => setForm({ ...form, label: e.target.value })}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-app-green mb-1.5">
+              <label className="block text-sm font-medium text-app-green dark:text-zinc-300 mb-1.5">
                 Street Address
               </label>
               <input
                 type="text"
                 required
-                className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border focus:border-app-green outline-none"
+                className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border dark:border-zinc-700 bg-transparent dark:bg-zinc-800 dark:text-zinc-100 focus:border-app-green outline-none"
                 value={form.address}
                 onChange={(e) => setForm({ ...form, address: e.target.value })}
               />
@@ -66,26 +66,26 @@ const AddressForm = ({
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-app-green mb-1.5">
+                <label className="block text-sm font-medium text-app-green dark:text-zinc-300 mb-1.5">
                   City
                 </label>
                 <input
                   type="text"
                   required
-                  className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border focus:border-app-green outline-none"
+                  className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border dark:border-zinc-700 bg-transparent dark:bg-zinc-800 dark:text-zinc-100 focus:border-app-green outline-none"
                   value={form.city}
                   onChange={(e) => setForm({ ...form, city: e.target.value })}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-app-green mb-1.5">
+                <label className="block text-sm font-medium text-app-green dark:text-zinc-300 mb-1.5">
                   State
                 </label>
                 <input
                   type="text"
                   required
-                  className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border focus:border-app-green outline-none"
+                  className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border dark:border-zinc-700 bg-transparent dark:bg-zinc-800 dark:text-zinc-100 focus:border-app-green outline-none"
                   value={form.state}
                   onChange={(e) => setForm({ ...form, state: e.target.value })}
                 />
@@ -94,13 +94,13 @@ const AddressForm = ({
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-app-green mb-1.5">
+                <label className="block text-sm font-medium text-app-green dark:text-zinc-300 mb-1.5">
                   Zip Code
                 </label>
                 <input
                   type="text"
                   required
-                  className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border focus:border-app-green outline-none"
+                  className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border dark:border-zinc-700 bg-transparent dark:bg-zinc-800 dark:text-zinc-100 focus:border-app-green outline-none"
                   value={form.zip}
                   onChange={(e) => setForm({ ...form, zip: e.target.value })}
                 />
@@ -116,7 +116,7 @@ const AddressForm = ({
                     }
                     className="h-4 w-4 text-app-green border-app-border focus:ring-app-green"
                   />
-                  <span className="text-sm text-app-text">Set as Default</span>
+                  <span className="text-sm text-app-text dark:text-zinc-300">Set as Default</span>
                 </label>
               </div>
             </div>

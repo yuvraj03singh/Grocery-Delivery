@@ -74,18 +74,18 @@ const Products = () => {
     <div className="min-h-screen bg-app-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/*breakcrumbs*/}
-        <nav className="flex items-center gap-2 text-sm text-app-text-light mb-6">
-          <Link to="/" className="transition-colors hover:text-app-green">
+        <nav className="flex items-center gap-2 text-sm text-app-text-light dark:text-zinc-400 mb-6">
+          <Link to="/" className="transition-colors hover:text-app-green dark:hover:text-zinc-200">
             <Home className="size-4" />
           </Link>
           <span>/</span>
-          <span>{activeCategory ? activeCategory.name : "All Products"}</span>
+          <span className="dark:text-zinc-300">{activeCategory ? activeCategory.name : "All Products"}</span>
         </nav>
 
         <div className="flex gap-8 xl:gap-10">
           {/*sidebar*/}
           <aside className="hidden lg:block w-64 shrink-0">
-            <div className="bg-white rounded-2xl p-4 sticky top-24">
+            <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 sticky top-24 border border-transparent dark:border-zinc-800">
               <FilterPanel
                 categories={categoriesData}
                 category={category}
@@ -104,10 +104,10 @@ const Products = () => {
             {/*header*/}
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h1 className="text-2xl font-semibold text-app-green">
+                <h1 className="text-2xl font-semibold text-app-green dark:text-zinc-100">
                   {activeCategory ? activeCategory.name : "All Products"}
                 </h1>
-                <p className="text-sm text-app-text-light mt-0.5">
+                <p className="text-sm text-app-text-light dark:text-zinc-400 mt-0.5">
                   {products.length} products found
                 </p>
               </div>
@@ -116,7 +116,7 @@ const Products = () => {
                 {/*mobile filter button*/}
                 <button
                   onClick={() => setMobileFilterOpen(true)}
-                  className="lg:hidden flex-items-center gap-2 px-3 py-2 text-sm bg-white rounded-xl border border-app-border hover:bg-app-cream transition-colors"
+                  className="lg:hidden flex-items-center gap-2 px-3 py-2 text-sm bg-white dark:bg-zinc-900 dark:text-zinc-100 rounded-xl border border-app-border dark:border-zinc-700 hover:bg-app-cream dark:hover:bg-zinc-800 transition-colors"
                 >
                   <SlidersHorizontal className="size-4" />
                   Filters
@@ -127,7 +127,7 @@ const Products = () => {
                   <select
                     value={sort}
                     onChange={(e) => updateFilter("sort", e.target.value)}
-                    className="appearance-none pl-3 pr-8 py-2  text-sm bg-white rounded-xl border border-app-border focus:border-app-green outline-none cursor-pointer"
+                    className="appearance-none pl-3 pr-8 py-2 text-sm bg-white dark:bg-zinc-900 dark:text-zinc-100 rounded-xl border border-app-border dark:border-zinc-700 focus:border-app-green outline-none cursor-pointer"
                   >
                     <option value="">Newest</option>
                     <option value="price-asc">Price: Low - High</option>
@@ -135,7 +135,7 @@ const Products = () => {
                     <option value="rating">Top Rating</option>
                     <option value="name">A-Z</option>
                   </select>
-                  <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-app-text-light pointer-events-none" />
+                  <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-app-text-light dark:text-zinc-400 pointer-events-none" />
                 </div>
               </div>
             </div>
@@ -180,7 +180,7 @@ const Products = () => {
                       updateFilter("page", String(i + 1));
                       scrollTo(0, 0);
                     }}
-                    className={`size-9 rounded-lg text-sm font-medium transition-colors${page === i + 1 ? " bg-app-green text-white" : " bg-white text-app-text-light hover:bg-app-cream"}`}
+                    className={`size-9 rounded-lg text-sm font-medium transition-colors${page === i + 1 ? " bg-app-green text-white" : " bg-white dark:bg-zinc-800 text-app-text-light dark:text-zinc-300 hover:bg-app-cream dark:hover:bg-zinc-700"}`}
                   >
                     {i + 1}
                   </button>

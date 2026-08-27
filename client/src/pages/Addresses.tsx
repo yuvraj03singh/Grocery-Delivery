@@ -122,11 +122,11 @@ const Addresses = () => {
 
   return (
     <div>
-      <div className="min-h-screen bg-app-cream">
+      <div className="min-h-screen bg-app-cream dark:bg-zinc-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Page Header */}
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-2xl font-semibold text-app-green">
+            <h1 className="text-2xl font-semibold text-app-green dark:text-zinc-100">
               {" "}
               My Addresses
             </h1>
@@ -155,11 +155,11 @@ const Addresses = () => {
             <Loading />
           ) : addresses.length === 0 ? (
             <div className="text-center py-16">
-              <MapPinIcon className="mx-auto size-16 text-app-border mb-4" />
-              <h2 className="text-lg font-semibold text-app-green mb-2">
+              <MapPinIcon className="mx-auto size-16 text-app-border dark:text-zinc-700 mb-4" />
+              <h2 className="text-lg font-semibold text-app-green dark:text-zinc-100 mb-2">
                 No addresses found.
               </h2>
-              <p className="text-sm text-app-text-light">
+              <p className="text-sm text-app-text-light dark:text-zinc-400">
                 Add a new address to get started.
               </p>
             </div>

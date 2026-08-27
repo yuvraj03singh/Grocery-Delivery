@@ -62,16 +62,16 @@ export default function AdminDashboard() {
         {cards.map((card) => (
           <div
             key={card.label}
-            className="bg-white rounded-2xl p-5 border border-app-border flex justify-between gap-3"
+            className="bg-white dark:bg-zinc-900 rounded-2xl p-5 border border-transparent dark:border-zinc-800 flex justify-between gap-3"
           >
             <div>
-              <p className="text-2xl font-semibold text-zinc-900">
+              <p className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
                 {card.value}
               </p>
-              <p className="text-sm text-app-text-light">{card.label}</p>
+              <p className="text-sm text-app-text-light dark:text-zinc-400">{card.label}</p>
             </div>
             <div
-              className={`size-10 rounded-xl flex-center bg-orange-50 text-orange-600`}
+              className={`size-10 rounded-xl flex-center bg-orange-50 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400`}
             >
               <card.icon className="size-5" />
             </div>
@@ -80,9 +80,9 @@ export default function AdminDashboard() {
       </div>
 
       {/* Recent Orders */}
-      <div className="bg-white rounded-2xl border border-app-border overflow-hidden">
-        <div className="px-6 py-5 border-b border-app-border flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-zinc-900">Recent Orders</h2>
+      <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-transparent dark:border-zinc-800 overflow-hidden">
+        <div className="px-6 py-5 border-b border-app-border dark:border-zinc-800 flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">Recent Orders</h2>
           <Link
             to="/admin/orders"
             className="text-sm font-medium text-app-orange hover:text-app-orange-dark transition-colors"
@@ -92,7 +92,7 @@ export default function AdminDashboard() {
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
-            <thead className="bg-app-cream/50 text-zinc-500 uppercase text-xs font-semibold">
+            <thead className="bg-app-cream/50 dark:bg-zinc-800/50 text-zinc-500 uppercase text-xs font-semibold">
               <tr>
                 <th className="px-6 py-3">Order ID</th>
                 <th className="px-6 py-3">Customer</th>
@@ -102,7 +102,7 @@ export default function AdminDashboard() {
                 <th className="px-6 py-3">Date</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-app-border">
+            <tbody className="divide-y divide-app-border dark:divide-zinc-800">
               {stats?.recentOrders.length === 0 ? (
                 <tr>
                   <td
@@ -116,23 +116,23 @@ export default function AdminDashboard() {
                 stats?.recentOrders.map((order: any) => (
                   <tr
                     key={order.id}
-                    className="hover:bg-zinc-50/50 transition-colors"
+                    className="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/50 transition-colors"
                   >
                     <td className="px-6 py-4 font-mono text-xs text-zinc-500">
                       #{order.id.slice(-6).toUpperCase()}
                     </td>
                     <td className="px-6 py-4">
-                      <p className="font-medium text-zinc-900">
+                      <p className="font-medium text-zinc-900 dark:text-zinc-100">
                         {order.user?.name || "—"}
                       </p>
                       <p className="text-xs text-zinc-500">
                         {order.user?.email || ""}
                       </p>
                     </td>
-                    <td className="px-6 py-4 text-zinc-600">
+                    <td className="px-6 py-4 text-zinc-600 dark:text-zinc-400">
                       {order.items?.length || 0} items
                     </td>
-                    <td className="px-6 py-4 font-medium">
+                    <td className="px-6 py-4 font-medium dark:text-zinc-100">
                       {currency}
                       {order.total?.toFixed(2)}
                     </td>
