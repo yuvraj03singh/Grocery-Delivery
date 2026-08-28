@@ -11,7 +11,7 @@ const Hero = () => {
         className="absolute inset-0 h-full w-full object-cover"
       />
 
-      <div className="absolute inset-0 bg-linear-to-r from-app-green via-app-green/65 to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-r from-app-green via-app-green/65 to-transparent dark:from-app-cream-dark dark:via-app-cream-dark/80" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 w-full">
         <div className="max-w-xl xl:pl-10">
