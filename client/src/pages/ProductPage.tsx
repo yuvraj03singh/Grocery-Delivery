@@ -103,7 +103,7 @@ const ProductPage = () => {
         </button>
 
         {/*Product details*/}
-        <div className="bg-white/50 rounded-2xl overflow-hidden">
+        <div className="bg-white/50 dark:bg-zinc-900 border border-transparent dark:border-zinc-800 rounded-2xl overflow-hidden shadow-sm dark:shadow-none">
           <div className="grid md:grid-cols-2 gap-0">
             <div className="relative flex-center p-8 md:p-12 min-h-[320px] md:min-h-[480px]">
               <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-1.5">
@@ -128,10 +128,10 @@ const ProductPage = () => {
             </div>
 
             <div className="p-6 md:p-0 flex flex-col justify-center">
-              <span className="text-xs font-medium text-app-text-light tracking-wider mb-2 capitalize">
+              <span className="text-xs font-medium text-app-text-light dark:text-zinc-400 tracking-wider mb-2 capitalize">
                 {categoryLabel}
               </span>
-              <h1 className="text-2xl md:text-3xl font-semibold text-app-green mb-3">
+              <h1 className="text-2xl md:text-3xl font-semibold text-app-green dark:text-zinc-100 mb-3">
                 {product.name}
               </h1>
 
@@ -141,31 +141,31 @@ const ProductPage = () => {
                     {[1, 2, 3, 4, 5].map((star) => (
                       <StarIcon
                         key={star}
-                        className={`w-4 h-4 ${star <= Math.round(product.rating) ? "text-app-warning fill-app-warning" : "text-app-border"}`}
+                        className={`w-4 h-4 ${star <= Math.round(product.rating) ? "text-app-warning fill-app-warning" : "text-app-border dark:text-zinc-700"}`}
                       />
                     ))}
                   </div>
-                  <span className="text-sm font-medium">{product.rating}</span>
-                  <span className="text-sm text-app-text-light">
+                  <span className="text-sm font-medium dark:text-zinc-100">{product.rating}</span>
+                  <span className="text-sm text-app-text-light dark:text-zinc-400">
                     ({product.reviewCount} reviews)
                   </span>
                 </div>
               )}
 
               <div>
-                <span className="text-3xl md:text-4xl font-semibold text-app-green inline-flex items-center gap-1">
+                <span className="text-3xl md:text-4xl font-semibold text-app-green dark:text-zinc-100 inline-flex items-center gap-1">
                   <IndianRupeeIcon className="size-6 md:size-7" />
                   {product.price.toFixed(2)}
                 </span>
                 {product.originalPrice > product.price && (
-                  <span className="text-sm text-app-text-light line-through ml-2 inline-flex items-center gap-0.5">
+                  <span className="text-sm text-app-text-light dark:text-zinc-400 line-through ml-2 inline-flex items-center gap-0.5">
                     <IndianRupeeIcon className="size-3.5" />
                     {product.originalPrice.toFixed(2)}
                   </span>
                 )}
               </div>
 
-              <p className="text-sm text-app-text-light leading-relaxed mb-6 mt-4">
+              <p className="text-sm text-app-text-light dark:text-zinc-400 leading-relaxed mb-6 mt-4">
                 {product.description}
               </p>
 
@@ -182,24 +182,24 @@ const ProductPage = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="flex items-center border border-app-border rounded-xl overflow-hidden">
+                <div className="flex items-center border border-app-border dark:border-zinc-700 rounded-xl overflow-hidden">
                   <button
                     type="button"
                     onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
-                    className="p-3 hover:bg-app-cream transition-colors disabled:opacity-40"
+                    className="p-3 hover:bg-app-cream dark:hover:bg-zinc-800 transition-colors disabled:opacity-40"
                     disabled={quantity <= 1}
                   >
-                    <MinusIcon className="w-4 h-4" />
+                    <MinusIcon className="w-4 h-4 dark:text-zinc-100" />
                   </button>
-                  <span className="px-5 text-sm font-semibold min-w-[40px] text-center">
+                  <span className="px-5 text-sm font-semibold min-w-[40px] text-center dark:text-zinc-100">
                     {quantity}
                   </span>
                   <button
                     type="button"
                     onClick={() => setQuantity((prev) => prev + 1)}
-                    className="p-3 hover:bg-app-cream transition-colors"
+                    className="p-3 hover:bg-app-cream dark:hover:bg-zinc-800 transition-colors"
                   >
-                    <PlusIcon className="w-4 h-4" />
+                    <PlusIcon className="w-4 h-4 dark:text-zinc-100" />
                   </button>
                 </div>
 
@@ -226,10 +226,10 @@ const ProductPage = () => {
           <section className="mt-12 mb-44">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-2xl font-semibold text-app-green">
+                <h2 className="text-2xl font-semibold text-app-green dark:text-zinc-100">
                   Related Products
                 </h2>
-                <p className="text-sm text-app-text-light mt-1">
+                <p className="text-sm text-app-text-light dark:text-zinc-400 mt-1">
                   More from {categoryLabel}
                 </p>
               </div>

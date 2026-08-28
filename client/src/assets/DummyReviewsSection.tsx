@@ -80,27 +80,27 @@ export default function DummyReviewsSection({ product }: { product: Product }) {
 
   return (
     <section className="mt-10 ">
-      <h2 className="text-2xl font-semibold text-app-green mb-6">
+      <h2 className="text-2xl font-semibold text-app-green dark:text-zinc-100 mb-6">
         Customer Reviews
       </h2>
 
-      <div className="bg-white/50 rounded-2xl p-6 md:p-8">
+      <div className="bg-white/50 dark:bg-zinc-900 border border-transparent dark:border-zinc-800 rounded-2xl p-6 md:p-8 shadow-sm dark:shadow-none">
         {/* Summary row */}
-        <div className="flex flex-col md:flex-row gap-8 mb-8 pb-8 border-b border-app-border">
+        <div className="flex flex-col md:flex-row gap-8 mb-8 pb-8 border-b border-app-border dark:border-zinc-800">
           {/* Average */}
           <div className="flex-center flex-col md:min-w-[160px] lg:w-1/3">
-            <span className="text-5xl font-semibold text-app-green">
+            <span className="text-5xl font-semibold text-app-green dark:text-zinc-100">
               {product.rating}
             </span>
             <div className="flex items-center gap-0.5 mt-2 mb-1">
               {[1, 2, 3, 4, 5].map((s) => (
                 <StarIcon
                   key={s}
-                  className={`size-4 ${s <= Math.round(product.rating) ? "text-app-warning fill-app-warning" : "text-app-border"}`}
+                  className={`size-4 ${s <= Math.round(product.rating) ? "text-app-warning fill-app-warning" : "text-app-border dark:text-zinc-700"}`}
                 />
               ))}
             </div>
-            <span className="text-sm text-zinc-600">
+            <span className="text-sm text-zinc-600 dark:text-zinc-400">
               {product.reviewCount} reviews
             </span>
           </div>
@@ -109,16 +109,16 @@ export default function DummyReviewsSection({ product }: { product: Product }) {
           <div className="flex-1 space-y-2">
             {breakdown.map((count, i) => (
               <div key={i} className="flex items-center gap-3">
-                <span className="text-sm text-zinc-600 w-8 text-right">
+                <span className="text-sm text-zinc-600 dark:text-zinc-400 w-8 text-right">
                   {5 - i} ★
                 </span>
-                <div className="flex-1 h-2.5 bg-app-border rounded-full overflow-hidden">
+                <div className="flex-1 h-2.5 bg-app-border dark:bg-zinc-800 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-app-warning rounded-full transition-all duration-500"
                     style={{ width: `${(count / maxCount) * 100}%` }}
                   />
                 </div>
-                <span className="text-xs text-zinc-600 w-6">{count}</span>
+                <span className="text-xs text-zinc-600 dark:text-zinc-400 w-6">{count}</span>
               </div>
             ))}
           </div>
@@ -128,29 +128,29 @@ export default function DummyReviewsSection({ product }: { product: Product }) {
         <div className="space-y-6">
           {reviews.map((review) => (
             <div key={review.id} className="flex gap-4">
-              <div className="size-10 rounded-full bg-app-green/10 text-app-green flex-center shrink-0 text-sm font-semibold">
+              <div className="size-10 rounded-full bg-app-green/10 dark:bg-zinc-800 text-app-green dark:text-zinc-300 flex-center shrink-0 text-sm font-semibold">
                 {review.avatar}
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center flex-wrap gap-2 mb-1">
-                  <span className="text-sm font-semibold text-app-text">
+                  <span className="text-sm font-semibold text-app-text dark:text-zinc-100">
                     {review.name}
                   </span>
-                  <span className="text-xs text-zinc-600">·</span>
-                  <span className="text-xs text-zinc-600">{review.date}</span>
+                  <span className="text-xs text-zinc-600 dark:text-zinc-400">·</span>
+                  <span className="text-xs text-zinc-600 dark:text-zinc-400">{review.date}</span>
                 </div>
                 <div className="flex items-center gap-0.5 mb-2">
                   {[1, 2, 3, 4, 5].map((s) => (
                     <StarIcon
                       key={s}
-                      className={`size-3.5 ${s <= review.rating ? "text-app-warning fill-app-warning" : "text-app-border"}`}
+                      className={`size-3.5 ${s <= review.rating ? "text-app-warning fill-app-warning" : "text-app-border dark:text-zinc-700"}`}
                     />
                   ))}
                 </div>
-                <p className="text-sm text-zinc-600 leading-relaxed">
+                <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
                   {review.comment}
                 </p>
-                <button className="mt-2 flex items-center gap-1.5 text-xs text-zinc-600 hover:text-app-green transition-colors">
+                <button className="mt-2 flex items-center gap-1.5 text-xs text-zinc-600 dark:text-zinc-400 hover:text-app-green dark:hover:text-zinc-100 transition-colors">
                   <ThumbsUpIcon className="size-3.5" /> Helpful (
                   {review.helpful})
                 </button>
