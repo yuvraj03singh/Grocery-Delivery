@@ -15,9 +15,11 @@ const AppLayout = () => {
 
   return (
     <>
-      <Banner />
-      <Navbar />
-      <main className="min-h-screen">
+      <div className="print:hidden">
+        <Banner />
+        <Navbar />
+      </div>
+      <main className="min-h-screen print:min-h-0">
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
@@ -30,8 +32,10 @@ const AppLayout = () => {
           </motion.div>
         </AnimatePresence>
       </main>
-      <Footer />
-      <CartSidebar />
+      <div className="print:hidden">
+        <Footer />
+        <CartSidebar />
+      </div>
     </>
   );
 };

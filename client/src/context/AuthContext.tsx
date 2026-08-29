@@ -8,7 +8,8 @@ interface AuthContextType {
   user: User | null;
   token: string | null;
   login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  sendOtp: (email: string) => Promise<void>;
+  register: (name: string, email: string, password: string, confirmPassword: string, otp: string) => Promise<void>;
   loading: boolean;
   logout: () => void;
   updateUser: (userData: Partial<User>) => void;
@@ -65,14 +66,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
   /**
+   * Sends an OTP verification code to the user's Gmail address.
+   * 
+   * @param email - The user's email address.
+   */
+  const sendOtp = async (email: string) => {
+    if (!email.toLowerCase().endsWith('@gmail.com')) {
+      toast.error("Only @gmail.com email addresses are allowed");
+      throw new Error("Invalid email domain");
+    }
+    try {
+      const { data } = await api.post("/auth/send-otp", { email });
+      toast.success(data?.message || "Verification code sent to your email");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || error?.message || "Failed to send verification code");
+      throw error;
+    }
+  };
+
+  /**
    * Registers a new user account with the backend API.
    * Enforces the `@gmail.com` domain rule.
    * 
    * @param name - The user's full name.
    * @param email - The user's email address.
    * @param password - The user's password.
+   * @param confirmPassword - The password confirmation.
+   * @param otp - The 6-digit OTP code received in email.
    */
-  const register = async (name: string, email: string, password: string) => {
+  const register = async (name: string, email: string, password: string, confirmPassword: string, otp: string) => {
     if (!email.toLowerCase().endsWith('@gmail.com')) {
       toast.error("Only @gmail.com email addresses are allowed");
       throw new Error("Invalid email domain");
@@ -82,6 +104,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         name,
         email,
         password,
+        confirmPassword,
+        otp,
       });
       setUser(data.user);
       setToken(data.token);
@@ -120,7 +144,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
   return (
     <AuthContext.Provider
-      value={{ user, token, login, register, loading, logout, updateUser }}
+      value={{ user, token, login, sendOtp, register, loading, logout, updateUser }}
     >
       {children}
     </AuthContext.Provider>

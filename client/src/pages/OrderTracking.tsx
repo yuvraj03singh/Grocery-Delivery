@@ -86,7 +86,7 @@ const OrderTracking = () => {
   }
 
   return (
-    <div className="min-h-screen mb-20 bg-[#FAF7F2] dark:bg-zinc-950 print:bg-white print:m-0 print:p-0">
+    <div className="min-h-screen mb-20 bg-[#FAF7F2] dark:bg-zinc-950 print:bg-white print:m-0 print:p-0 print:min-h-0 print:mb-0">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 print:hidden">
         {/* Back button */}
         <button
@@ -160,8 +160,20 @@ const OrderTracking = () => {
                   <h3 className="text-base font-bold text-gray-900 dark:text-zinc-100">
                     Assigned Delivery Partner
                   </h3>
-                  <span className="text-xs font-semibold text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/30 px-2.5 py-1 rounded-full border border-green-200 dark:border-green-800/50">
-                    On the way
+                  <span
+                    className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${
+                      order.status === "Delivered"
+                        ? "text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 border-emerald-200 dark:border-emerald-800/50"
+                        : order.status === "Cancelled"
+                        ? "text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800/50"
+                        : "text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-800/50"
+                    }`}
+                  >
+                    {order.status === "Delivered"
+                      ? "Delivered"
+                      : order.status === "Cancelled"
+                      ? "Cancelled"
+                      : "On the way"}
                   </span>
                 </div>
                 <div className="flex items-center justify-between gap-4">
@@ -178,15 +190,17 @@ const OrderTracking = () => {
                       </p>
                     </div>
                   </div>
-                  {order.deliveryPartner.phone && (
-                    <a
-                      href={`tel:${order.deliveryPartner.phone}`}
-                      className="inline-flex items-center gap-2 px-4 py-2.5 bg-app-green text-white rounded-xl text-sm font-semibold hover:bg-app-dark-green transition-colors shadow-xs"
-                    >
-                      <PhoneIcon className="size-4" />
-                      <span>Call Driver</span>
-                    </a>
-                  )}
+                  {order.deliveryPartner.phone &&
+                    order.status !== "Delivered" &&
+                    order.status !== "Cancelled" && (
+                      <a
+                        href={`tel:${order.deliveryPartner.phone}`}
+                        className="inline-flex items-center gap-2 px-4 py-2.5 bg-app-green text-white rounded-xl text-sm font-semibold hover:bg-app-dark-green transition-colors shadow-xs"
+                      >
+                        <PhoneIcon className="size-4" />
+                        <span>Call Driver</span>
+                      </a>
+                    )}
                 </div>
               </div>
             )}
