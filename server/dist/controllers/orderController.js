@@ -1,6 +1,21 @@
 import { prisma } from "../config/prisma.js";
 import { inngest } from "../inngest/index.js";
 import Stripe from "stripe";
+/**
+ * Creates a new order for the authenticated user.
+ *
+ * Flow:
+ * 1. Validates that the order has items.
+ * 2. Looks up all products in the database and verifies stock availability.
+ * 3. Constructs order items with current prices and metadata.
+ * 4. Calculates subtotal, tax, and delivery fee.
+ * 5. Creates the order in the database.
+ * 6. If payment method is "card", initiates a Stripe checkout session.
+ * 7. Decrements product stock and sends Inngest events for real-time updates.
+ *
+ * @param req - Express Request object containing order details in body.
+ * @param res - Express Response object.
+ */
 export const createOrder = async (req, res) => {
     try {
         const { items, shippingAddress, paymentMethod } = req.body;
@@ -94,8 +109,12 @@ export const createOrder = async (req, res) => {
         res.status(500).json({ message: "Failed to create order", error: error.message, stack: error.stack });
     }
 };
-//get orders for user
-//get/api/orders
+/**
+ * Retrieves all orders for the currently authenticated user.
+ *
+ * @param req - Express Request object containing optional `status` query parameter.
+ * @param res - Express Response object.
+ */
 export const getUserOrders = async (req, res) => {
     const { status } = req.query;
     const where = { userId: req.user.id, NOT: [{ paymentMethod: "card", isPaid: false }] };
@@ -109,12 +128,20 @@ export const getUserOrders = async (req, res) => {
     });
     res.json({ orders });
 };
-//get single order by id
-//get/api/orders/:id
+/**
+ * Retrieves a single order by its ID, ensuring it belongs to the authenticated user.
+ * Includes delivery partner and user metadata.
+ *
+ * @param req - Express Request object containing `id` parameter.
+ * @param res - Express Response object.
+ */
 export const getOrder = async (req, res) => {
     const order = await prisma.order.findFirst({
         where: { id: req.params.id, userId: req.user.id },
-        include: { deliveryPartner: { select: { name: true, phone: true, avatar: true, vehicleType: true } } }
+        include: {
+            deliveryPartner: { select: { name: true, phone: true, avatar: true, vehicleType: true } },
+            user: { select: { name: true, email: true, phone: true } }
+        }
     });
     if (!order) {
         return res.status(404).json({ message: "Order not found" });
@@ -123,6 +150,13 @@ export const getOrder = async (req, res) => {
 };
 //update order status by admin
 //put /api/orders/:id/status
+/**
+ * Updates the status of an existing order. Typically used by admins.
+ * Appends the new status to the order's status history log.
+ *
+ * @param req - Express Request object containing `id` parameter and new `status` in body.
+ * @param res - Express Response object.
+ */
 export const updateOrderStatus = async (req, res) => {
     const { status, note } = req.body;
     const order = await prisma.order.findUnique({
@@ -141,6 +175,13 @@ export const updateOrderStatus = async (req, res) => {
 };
 //get all orders for admin
 //get /api/orders/all
+/**
+ * Retrieves all orders in the system. Typically used by the admin dashboard.
+ * Includes basic user and delivery partner metadata.
+ *
+ * @param req - Express Request object.
+ * @param res - Express Response object.
+ */
 export const getAllOrders = async (req, res) => {
     const orders = await prisma.order.findMany({
         include: {
@@ -153,6 +194,12 @@ export const getAllOrders = async (req, res) => {
 };
 //get order location by order id
 //get /api/orders/:id/location
+/**
+ * Retrieves the live location coordinates of an order's delivery partner.
+ *
+ * @param req - Express Request object containing `id` parameter.
+ * @param res - Express Response object containing location coordinates and status.
+ */
 export const getOrderLocation = async (req, res) => {
     const order = await prisma.order.findFirst({
         where: { id: req.params.id, userId: req.user.id },

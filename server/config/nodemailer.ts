@@ -17,8 +17,13 @@ type SendEmailArgs = {
 };
 
 const sendEmail = async ({ to, subject, body }: SendEmailArgs) => {
+  const sender = process.env.SENDER_EMAIL || "";
+  const formattedFrom = sender.includes("<")
+    ? sender
+    : `"Apna Bazar" <${sender}>`;
+
   return await transporter.sendMail({
-    from: process.env.SENDER_EMAIL,
+    from: formattedFrom,
     to,
     subject,
     html: body,
