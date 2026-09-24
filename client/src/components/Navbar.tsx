@@ -11,12 +11,15 @@ import {
   ShoppingCartIcon,
   UserIcon,
   XIcon,
+  ChefHat,
+  Sparkles,
 } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import ThemeToggle from "./ThemeToggle";
+import RecipeModal from "./AiRecipe/RecipeModal";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -24,6 +27,7 @@ const Navbar = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [isAiModalOpen, setIsAiModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -72,6 +76,15 @@ const Navbar = () => {
             >
               Deals
             </Link>
+
+            {/* AI Chef Trigger */}
+            <button
+              onClick={() => setIsAiModalOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-orange-500/10 to-amber-500/10 hover:from-orange-500/20 hover:to-amber-500/20 border border-orange-200 dark:border-orange-500/30 text-orange-600 dark:text-orange-400 font-semibold text-xs transition-all shadow-xs active:scale-95"
+            >
+              <Sparkles className="size-3.5 text-amber-500 animate-spin" />
+              <span>AI Chef</span>
+            </button>
           </div>
 
           {/* Search */}
@@ -203,6 +216,17 @@ const Navbar = () => {
                         <ArrowUpRightIcon size={16} />
                         Deals
                       </Link>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setUserMenuOpen(false);
+                          setIsAiModalOpen(true);
+                        }}
+                        className="dropdown-link w-full text-left text-orange-600 dark:text-orange-400 font-medium"
+                      >
+                        <ChefHat size={16} />
+                        AI Recipe Chef
+                      </button>
 
                       {user?.isAdmin && (
                         <Link to="/admin/products" className="dropdown-link">
@@ -234,6 +258,12 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
+      {/* AI Recipe-to-Cart Modal */}
+      <RecipeModal
+        isOpen={isAiModalOpen}
+        onClose={() => setIsAiModalOpen(false)}
+      />
     </nav>
   );
 };

@@ -69,9 +69,15 @@ export const createOrder = async (req: Request, res: Response) => {
 
 
 
+        const orderingUser = await prisma.user.findUnique({
+            where: { id: req.user?.id as string },
+            select: { name: true }
+        });
+
         const order = await prisma.order.create({
             data: {
                 userId: req.user?.id as string,
+                userName: orderingUser?.name || "",
                 items: orderItems,
                 shippingAddress,
                 paymentMethod,

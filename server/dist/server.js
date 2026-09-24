@@ -11,6 +11,7 @@ import { inngest, functions } from "./inngest/index.js";
 import addressRouter from "./routes/addressRoutes.js";
 import adminRouter from "./routes/adminRoutes.js";
 import deliveryPartnerRouter from "./routes/deliveryPartnerRoutes.js";
+import aiRouter from "./routes/aiRoutes.js";
 const app = express();
 app.use(cors());
 app.post('/webhook', express.raw({ type: 'application/json' }), stripeWebhook);
@@ -27,6 +28,7 @@ app.use('/api/inngest', serve({ client: inngest, functions }));
 app.use('/api/addresses', addressRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/delivery', deliveryPartnerRouter);
+app.use('/api/ai', aiRouter);
 //error handling middleware
 app.use((error, req, res, next) => {
     console.error(error);

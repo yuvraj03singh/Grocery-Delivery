@@ -55,9 +55,14 @@ export const createOrder = async (req, res) => {
         const deliveryFee = subTotal > 20 ? 0 : 1.99;
         const tax = Math.round(subTotal * 0.08 * 100) / 100;
         const total = Math.round((subTotal + deliveryFee + tax) * 100) / 100;
+        const orderingUser = await prisma.user.findUnique({
+            where: { id: req.user?.id },
+            select: { name: true }
+        });
         const order = await prisma.order.create({
             data: {
                 userId: req.user?.id,
+                userName: orderingUser?.name || "",
                 items: orderItems,
                 shippingAddress,
                 paymentMethod,

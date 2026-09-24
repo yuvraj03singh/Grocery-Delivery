@@ -4,11 +4,13 @@ import Hero from "../components/Home/Hero";
 import HomeCategories from "../components/Home/HomeCategories";
 import Newsletter from "../components/Home/Newsletter";
 import PopularProducts from "../components/Home/PopularProduct";
+import RecipeBanner from "../components/AiRecipe/RecipeBanner";
 
 const Home = () => {
   return (
     <div className="min-h-screen max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <Hero />
+      <RecipeBanner />
       <Features />
       <HomeCategories />
       <PopularProducts />

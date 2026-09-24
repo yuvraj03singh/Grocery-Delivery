@@ -58,6 +58,7 @@ export const sendOtp = async (req, res) => {
         otp,
         expiresAt: Date.now() + 10 * 60 * 1000,
     });
+    console.log(`[AUTH] Registration OTP generated for ${email.toLowerCase()}: ${otp}`);
     try {
         await sendEmail({
             to: email.toLowerCase(),
@@ -86,10 +87,11 @@ export const sendOtp = async (req, res) => {
             </div>
             `,
         });
+        console.log(`[AUTH] Verification email sent successfully to ${email.toLowerCase()}`);
         res.status(200).json({ message: "Verification code sent to your email" });
     }
     catch (error) {
-        console.error("Error sending verification OTP email:", error);
+        console.error("[AUTH] Error sending verification OTP email:", error);
         res.status(500).json({ message: "Failed to send verification email. Please check your credentials or try again later." });
     }
 };
@@ -189,4 +191,119 @@ export const login = async (req, res) => {
     delete userData.password;
     userData.isAdmin = getAdminStatus(userData.email);
     res.status(200).json({ message: "Login successful", user: userData, token });
+};
+/**
+ * Sends a 6-digit OTP code to the user's Gmail address for password reset.
+ * Verifies that an account with this email exists in the database.
+ */
+export const forgotPasswordSendOtp = async (req, res) => {
+    const { email } = req.body;
+    if (!email) {
+        return res.status(400).json({ message: "Email is required" });
+    }
+    if (!email.toLowerCase().endsWith('@gmail.com')) {
+        return res.status(400).json({ message: "Only @gmail.com email addresses are allowed" });
+    }
+    const existingUser = await prisma.user.findUnique({
+        where: {
+            email: email.toLowerCase()
+        }
+    });
+    if (!existingUser) {
+        return res.status(404).json({ message: "No account found with this email address. Please check or register first." });
+    }
+    // Generate a 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    // Store in memory for 10 minutes with dedicated reset key
+    otpStore.set(`reset_${email.toLowerCase()}`, {
+        otp,
+        expiresAt: Date.now() + 10 * 60 * 1000,
+    });
+    console.log(`[AUTH] Password reset requested for: ${email.toLowerCase()}`);
+    console.log(`[AUTH] Reset OTP generated for ${email.toLowerCase()}: ${otp}`);
+    try {
+        await sendEmail({
+            to: email.toLowerCase(),
+            subject: "Your Apna Bazar Password Reset Code",
+            body: `
+            <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 500px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                <div style="background: linear-gradient(135deg, #f97316, #ea580c); padding: 32px 24px; text-align: center;">
+                    <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.5px;">Apna Bazar</h1>
+                    <p style="color: #ffedd5; margin: 8px 0 0 0; font-size: 14px;">Password Reset Request</p>
+                </div>
+                <div style="padding: 32px 24px; text-align: center;">
+                    <h2 style="color: #1e293b; margin: 0 0 12px 0; font-size: 20px; font-weight: 600;">Verification Code</h2>
+                    <p style="color: #64748b; font-size: 14px; line-height: 1.6; margin: 0 0 24px 0;">
+                        We received a request to reset your password. Use the verification code below to set a new password.
+                    </p>
+                    <div style="background: #fff7ed; border: 2px dashed #fdba74; border-radius: 12px; padding: 20px; margin: 0 auto 24px auto; display: inline-block;">
+                        <span style="font-family: monospace; font-size: 32px; font-weight: 700; letter-spacing: 8px; color: #ea580c;">${otp}</span>
+                    </div>
+                    <p style="color: #94a3b8; font-size: 12px; margin: 0;">
+                        This code is valid for <strong>10 minutes</strong>. If you did not request a password reset, please ignore this email.
+                    </p>
+                </div>
+                <div style="background-color: #f1f5f9; padding: 16px 24px; text-align: center; border-top: 1px solid #e2e8f0;">
+                    <p style="color: #64748b; font-size: 12px; margin: 0;">© ${new Date().getFullYear()} Apna Bazar. All rights reserved.</p>
+                </div>
+            </div>
+            `,
+        });
+        console.log(`[AUTH] Password reset email sent successfully to ${email.toLowerCase()}`);
+        res.status(200).json({ message: "Password reset verification code sent to your email" });
+    }
+    catch (error) {
+        console.error("[AUTH] Error sending reset password OTP email:", error);
+        res.status(500).json({ message: "Failed to send verification email. Please check your connection or try again later." });
+    }
+};
+/**
+ * Resets the user's password after verifying the OTP code.
+ * Updates the new hashed password in the database.
+ */
+export const resetPassword = async (req, res) => {
+    const { email, otp, newPassword, confirmPassword } = req.body;
+    if (!email || !otp || !newPassword || !confirmPassword) {
+        return res.status(400).json({ message: "Please provide all required fields including the verification code" });
+    }
+    if (newPassword !== confirmPassword) {
+        return res.status(400).json({ message: "Passwords do not match" });
+    }
+    if (newPassword.length < 6) {
+        return res.status(400).json({ message: "Password must be at least 6 characters" });
+    }
+    if (!email.toLowerCase().endsWith('@gmail.com')) {
+        return res.status(400).json({ message: "Only @gmail.com email addresses are allowed" });
+    }
+    // Verify OTP
+    const record = otpStore.get(`reset_${email.toLowerCase()}`);
+    if (!record || record.expiresAt < Date.now()) {
+        return res.status(400).json({ message: "Verification code has expired or was not requested. Please request a new code." });
+    }
+    if (record.otp !== otp.trim()) {
+        return res.status(400).json({ message: "Invalid verification code. Please check your email and try again." });
+    }
+    // Check that user exists in database
+    const user = await prisma.user.findUnique({
+        where: {
+            email: email.toLowerCase()
+        }
+    });
+    if (!user) {
+        return res.status(404).json({ message: "No account found with this email address" });
+    }
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    // Update password in the database
+    await prisma.user.update({
+        where: {
+            id: user.id
+        },
+        data: {
+            password: hashedPassword
+        }
+    });
+    // Clear used OTP from memory
+    otpStore.delete(`reset_${email.toLowerCase()}`);
+    res.status(200).json({ message: "Password reset successfully! You can now sign in with your new password." });
 };

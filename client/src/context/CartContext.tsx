@@ -4,6 +4,7 @@ import type { CartItem, Product } from "../types";
 interface CartContextType {
   items: CartItem[];
   addToCart: (product: Product, quantity?: number) => void;
+  addMultipleToCart: (productsToAdd: { product: Product; quantity: number }[], openSidebar?: boolean) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
@@ -60,6 +61,44 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   };
 
   /**
+   * Adds multiple products to the shopping cart in a single batch operation.
+   * 
+   * @param productsToAdd - Array of items with product and quantity
+   * @param openSidebar - Whether to open the cart drawer (default true)
+   */
+  const addMultipleToCart = (
+    productsToAdd: { product: Product; quantity: number }[],
+    openSidebar: boolean = true
+  ) => {
+    setItems((prev) => {
+      let updated = [...prev];
+
+      for (const itemToAdd of productsToAdd) {
+        if (!itemToAdd.product || !itemToAdd.quantity || itemToAdd.quantity <= 0) continue;
+        const existingIndex = updated.findIndex((i) => i.product.id === itemToAdd.product.id);
+
+        if (existingIndex > -1) {
+          updated[existingIndex] = {
+            ...updated[existingIndex],
+            quantity: updated[existingIndex].quantity + itemToAdd.quantity,
+          };
+        } else {
+          updated.push({
+            product: itemToAdd.product,
+            quantity: itemToAdd.quantity,
+          });
+        }
+      }
+
+      return updated;
+    });
+
+    if (openSidebar) {
+      setIsCartOpen(true);
+    }
+  };
+
+  /**
    * Removes an entire product entry from the shopping cart regardless of its quantity.
    * 
    * @param productId - The unique ID of the product to remove.
@@ -107,6 +146,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       value={{
         items,
         addToCart,
+        addMultipleToCart,
         removeFromCart,
         updateQuantity,
         clearCart,

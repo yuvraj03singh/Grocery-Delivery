@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { BikeIcon } from "lucide-react";
+import { BikeIcon, HomeIcon } from "lucide-react";
 import { heroSectionData } from "../../assets/assets";
 import api from "../../config/api";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function DeliveryLogin() {
     const navigate = useNavigate();
@@ -42,7 +42,16 @@ export default function DeliveryLogin() {
     }, [navigate]);
 
     return (
-        <div className="min-h-screen flex bg-app-cream dark:bg-zinc-950">
+        <div className="min-h-screen flex bg-app-cream dark:bg-zinc-950 relative">
+            {/* Top Left Home Button */}
+            <Link
+                to="/"
+                className="absolute top-5 left-5 z-20 flex items-center gap-2 px-4 py-2 bg-white/85 dark:bg-zinc-900/85 backdrop-blur-md rounded-full border border-app-border dark:border-zinc-800 shadow-sm hover:shadow-md hover:bg-white dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-200 text-sm font-medium transition-all group active:scale-95"
+            >
+                <HomeIcon className="size-4 text-app-orange group-hover:scale-110 transition-transform" />
+                <span>Home</span>
+            </Link>
+
             {/* Left Side */}
             <div className="hidden lg:flex lg:w-1/2 bg-app-green relative items-center justify-center">
                 <img src={heroSectionData.hero_image} alt="" className="absolute inset-0 object-cover h-full bg-center opacity-10" />

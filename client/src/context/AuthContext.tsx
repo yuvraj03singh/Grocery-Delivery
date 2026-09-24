@@ -10,6 +10,8 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   sendOtp: (email: string) => Promise<void>;
   register: (name: string, email: string, password: string, confirmPassword: string, otp: string) => Promise<void>;
+  sendForgotPasswordOtp: (email: string) => Promise<void>;
+  resetPassword: (email: string, otp: string, newPassword: string, confirmPassword: string) => Promise<void>;
   loading: boolean;
   logout: () => void;
   updateUser: (userData: Partial<User>) => void;
@@ -120,6 +122,47 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   /**
+   * Sends an OTP verification code for password reset to the user's Gmail address.
+   * 
+   * @param email - The user's email address.
+   */
+  const sendForgotPasswordOtp = async (email: string) => {
+    if (!email.toLowerCase().endsWith('@gmail.com')) {
+      toast.error("Only @gmail.com email addresses are allowed");
+      throw new Error("Invalid email domain");
+    }
+    try {
+      const { data } = await api.post("/auth/forgot-password/send-otp", { email });
+      toast.success(data?.message || "Password reset code sent to your email");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || error?.message || "Failed to send reset code");
+      throw error;
+    }
+  };
+
+  /**
+   * Resets the user's password with OTP verification.
+   */
+  const resetPassword = async (email: string, otp: string, newPassword: string, confirmPassword: string) => {
+    if (!email.toLowerCase().endsWith('@gmail.com')) {
+      toast.error("Only @gmail.com email addresses are allowed");
+      throw new Error("Invalid email domain");
+    }
+    try {
+      const { data } = await api.post("/auth/forgot-password/reset", {
+        email,
+        otp,
+        newPassword,
+        confirmPassword,
+      });
+      toast.success(data?.message || "Password reset successfully!");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || error?.message || "Failed to reset password");
+      throw error;
+    }
+  };
+
+  /**
    * Clears the user session by removing tokens from local storage and resetting context state.
    * Redirects the user back to the login page.
    */
@@ -144,7 +187,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
   return (
     <AuthContext.Provider
-      value={{ user, token, login, sendOtp, register, loading, logout, updateUser }}
+      value={{
+        user,
+        token,
+        login,
+        sendOtp,
+        register,
+        sendForgotPasswordOtp,
+        resetPassword,
+        loading,
+        logout,
+        updateUser,
+      }}
     >
       {children}
     </AuthContext.Provider>

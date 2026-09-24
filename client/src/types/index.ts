@@ -72,6 +72,8 @@ export interface DeliveryPartner {
 
 export interface Order {
     id: string;
+    userId?: string;
+    userName?: string;
     user: string | { id: string; name: string; email: string; phone?: string };
     items: OrderItem[];
     shippingAddress: Omit<Address, "id" | "isDefault">;

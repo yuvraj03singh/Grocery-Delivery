@@ -57,6 +57,7 @@ model Order {
   id              String @id @default(uuid())
   userId          String
   user            User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userName        String? @default("")
   items           Json
   shippingAddress Json
   paymentMethod   String @default("card")

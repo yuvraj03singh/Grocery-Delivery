@@ -1,0 +1,17 @@
+{
+  "watch": [
+    "controllers",
+    "routes",
+    "config",
+    "middlewares",
+    "models",
+    "server.ts",
+    ".env"
+  ],
+  "ext": "ts,js,json,env",
+  "ignore": [
+    "node_modules",
+    "dist"
+  ],
+  "exec": "tsx server.ts"
+}
